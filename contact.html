@@ -27,7 +27,128 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
         
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 280px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            border: 1px solid rgba(250, 165, 6, 0.2);
+            z-index: 1000;
+            margin-top: 10px;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #374151;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(250, 165, 6, 0.1);
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(250, 165, 6, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+            color: #faa506;
+            transform: translateX(5px);
+        }
+        
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Premium Background Overlays */
+        .premium-overlay-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(250, 165, 6, 0.05) 0%, rgba(34, 197, 94, 0.05) 100%);
+            pointer-events: none;
+        }
+        
+        .premium-overlay-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(250, 165, 6, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        /* Tech Card Styles */
+        .tech-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(250, 165, 6, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(250, 165, 6, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .tech-card:hover::before {
+            left: 100%;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(250, 165, 6, 0.3);
+            border-color: rgba(250, 165, 6, 0.5);
+        }
+        
+        /* Category Badge */
+        .category-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .frontend { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+        .backend { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .database { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .cloud { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .devops { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .mobile { background: linear-gradient(135deg, #ec4899, #db2777); color: white; }
+    
         body {
             font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
             overflow-x: hidden;
@@ -323,6 +444,7 @@
     <div class="floating-element w-24 h-24 bottom-32 left-1/4" style="animation-delay: 4s;"></div>
     <div class="floating-element w-40 h-40 bottom-20 right-1/3" style="animation-delay: 6s;"></div>
     
+    
     <!-- Premium Navigation -->
     <nav class="fixed top-0 left-0 w-full z-50 py-5 px-8 lg:px-20 transition-all duration-500 bg-white/80 backdrop-blur-xl border-b border-orange-100 shadow-lg" id="mainNav">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -337,12 +459,80 @@
                 <a href="solutions.html" class="hover:text-orange-600 transition">Solutions</a>
                 <a href="products.html" class="hover:text-orange-600 transition">Products</a>
                 <a href="portfolio.html" class="hover:text-orange-600 transition">Portfolio</a>
-                <a href="contact.html" class="text-orange-600 font-semibold">Contact</a>
+                <div class="dropdown">
+                    <a href="technologies.html" class="text-orange-600 font-semibold flex items-center gap-1">
+                        Technologies
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="tech-angular.html" class="dropdown-item">
+                            <i class="fab fa-angular text-red-600"></i>
+                            <span>Angular</span>
+                            <span class="category-badge frontend ml-auto">Frontend</span>
+                        </a>
+                        <a href="tech-react.html" class="dropdown-item">
+                            <i class="fab fa-react text-blue-600"></i>
+                            <span>React</span>
+                            <span class="category-badge frontend ml-auto">Frontend</span>
+                        </a>
+                        <a href="tech-nodejs.html" class="dropdown-item">
+                            <i class="fab fa-node-js text-green-600"></i>
+                            <span>Node.js</span>
+                            <span class="category-badge backend ml-auto">Backend</span>
+                        </a>
+                        <a href="tech-python.html" class="dropdown-item">
+                            <i class="fab fa-python text-blue-500"></i>
+                            <span>Python</span>
+                            <span class="category-badge backend ml-auto">Backend</span>
+                        </a>
+                        <a href="tech-dotnet.html" class="dropdown-item">
+                            <i class="fab fa-microsoft text-blue-700"></i>
+                            <span>.NET</span>
+                            <span class="category-badge backend ml-auto">Backend</span>
+                        </a>
+                        <a href="tech-sql.html" class="dropdown-item">
+                            <i class="fas fa-database text-orange-600"></i>
+                            <span>SQL</span>
+                            <span class="category-badge database ml-auto">Database</span>
+                        </a>
+                        <a href="tech-aws.html" class="dropdown-item">
+                            <i class="fab fa-aws text-orange-500"></i>
+                            <span>AWS</span>
+                            <span class="category-badge cloud ml-auto">Cloud</span>
+                        </a>
+                        <a href="tech-azure.html" class="dropdown-item">
+                            <i class="fab fa-microsoft text-blue-600"></i>
+                            <span>Azure</span>
+                            <span class="category-badge cloud ml-auto">Cloud</span>
+                        </a>
+                        <a href="tech-docker.html" class="dropdown-item">
+                            <i class="fab fa-docker text-blue-400"></i>
+                            <span>Docker</span>
+                            <span class="category-badge devops ml-auto">DevOps</span>
+                        </a>
+                        <a href="tech-git.html" class="dropdown-item">
+                            <i class="fab fa-git-alt text-orange-600"></i>
+                            <span>Git</span>
+                            <span class="category-badge devops ml-auto">DevOps</span>
+                        </a>
+                        <a href="tech-directus.html" class="dropdown-item">
+                            <i class="fas fa-server text-purple-600"></i>
+                            <span>Directus</span>
+                            <span class="category-badge backend ml-auto">Backend</span>
+                        </a>
+                        <a href="tech-vercel.html" class="dropdown-item">
+                            <i class="fas fa-rocket text-gray-800"></i>
+                            <span>Vercel</span>
+                            <span class="category-badge cloud ml-auto">Cloud</span>
+                        </a>
+                    </div>
+                </div>
+                <a href="contact.html" class="hover:text-orange-600 transition">Contact</a>
             </div>
-            <button onclick="window.location.href='#contact-form'" class="hidden md:block bg-gradient-to-r from-orange-600 to-orange-500 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:from-orange-700 hover:to-orange-600 transition shadow-md hover:shadow-lg">
+            <button onclick="window.location.href='#contact'" class="hidden md:block bg-gradient-to-r from-orange-600 to-orange-500 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:from-orange-700 hover:to-orange-600 transition shadow-md hover:shadow-lg">
                 Get Started
             </button>
-            <div class="md:hidden text-2xl cursor-pointer text-gray-700" onclick="toggleMobileMenu()">☰</div>
+            <div class="md:hidden text-2xl cursor-pointer text-gray-700">☰</div>
         </div>
     </nav>
 
