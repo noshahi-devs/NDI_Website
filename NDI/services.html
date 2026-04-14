@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Services - Noshahi Developers Inc.</title>
+  <!-- Google Fonts + Tailwind + GSAP + Three.js + Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #FFFFFF;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      color: #111827;
+    }
+    /* Custom cursor for premium feel (light version) */
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: orange;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s;
+    }
+    .cursor-outline {
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(79, 70, 229, 0.4);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.15s ease-out;
+    }
+    /* Scrollbar light */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: orange; border-radius: 10px; }
+    /* Floating animation */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    .float-animation {
+      animation: float 5s ease-in-out infinite;
+    }
+    .hover-3d {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .hover-3d:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    }
+    /* Premium Background Overlays */
+    .premium-overlay-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(255, 167, 4, 0.1) 0%, 
+        rgba(79, 70, 229, 0.05) 25%, 
+        rgba(255, 255, 255, 0.02) 50%, 
+        rgba(255, 167, 4, 0.05) 75%, 
+        rgba(79, 70, 229, 0.1) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .premium-overlay-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255, 167, 4, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 167, 4, 0.06) 0%, transparent 50%);
+      background-size: 100% 100%, 100% 100%, 100% 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .premium-overlay-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, 
+        rgba(255, 167, 4, 0.15) 0%, 
+        rgba(255, 167, 4, 0.08) 40%, 
+        transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(40px);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 overflow-x-hidden">
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+
+  <!-- Premium Navigation (Light) -->
+  <nav class="fixed top-0 left-0 w-full z-50 py-5 px-8 lg:px-20 transition-all duration-500 bg-white/80 backdrop-blur-md border-b border-gray-100" id="mainNav">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white">N</div>
+        <span class="font-bold text-xl tracking-tight text-gray-900">Noshahi <span class="text-orange-600">Developers Inc.,</span></span>
+      </div>
+      <div class="hidden md:flex gap-8 text-gray-600 font-medium">
+        <a href="index.html" class="hover:text-orange-600 transition">Home</a>
+        <a href="about.html" class="hover:text-orange-600 transition">About</a>
+        <a href="services.html" class="text-orange-600 font-semibold">Services</a>
+        <a href="#" class="hover:text-orange-600 transition">Products</a>
+        <a href="#" class="hover:text-orange-600 transition">Portfolio</a>
+        <a href="#" class="hover:text-orange-600 transition">Contact</a>
+      </div>
+      <button class="hidden md:block bg-orange-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-700 transition shadow-md hover:shadow-lg">Get in touch</button>
+      <div class="md:hidden text-2xl cursor-pointer text-gray-700">☰</div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center relative pt-32 pb-20 px-6 lg:px-20 overflow-hidden bg-white">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    <div class="premium-overlay-glow"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10 w-full">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-6 py-3 mb-8">
+          <span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-600 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-orange-600"></span></span>
+          <span class="text-sm uppercase tracking-[0.2em] font-bold text-orange-700">Our Services</span>
+        </div>
+        <h1 class="text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
+          Professional <span class="text-orange-600">Software Solutions</span>
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          We provide comprehensive software development services tailored to transform your business operations and accelerate digital growth.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagement Section -->
+  <section class="py-20 px-6 lg:px-20 bg-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Content -->
+        <div class="space-y-8">
+          <div class="mb-8">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+              Our <span class="text-orange-600">engagement</span> adapts to your needs
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              We provide software development and implementation services to automate your business operating processes so that you serve your customers.
+            </p>
+          </div>
+          
+          <!-- Service Items -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Development Resources</h3>
+                <p class="text-gray-600">Software developers & IT engineers as part of your team onshore or offshore.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Flex-Capacity Solution Teams</h3>
+                <p class="text-gray-600">Provide teams of developers and engineers to deliver your projects.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Development Center</h3>
+                <p class="text-gray-600">An extension of your IT department to enable every developmental function.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Image -->
+        <div class="relative">
+          <div class="relative z-10">
+            <img src="https://zilon.com/wp-content/uploads/2021/02/Img_2.png" alt="Development Services" class="w-full h-auto rounded-3xl shadow-2xl">
+          </div>
+          <!-- Background decoration -->
+          <div class="absolute -top-8 -right-8 w-64 h-64 bg-orange-100 rounded-full blur-3xl opacity-50"></div>
+          <div class="absolute -bottom-8 -left-8 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-50"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enterprise Software Development Section -->
+  <section id="enterprise-section" class="py-20 px-6 lg:px-20 bg-gray-50 relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Content -->
+        <div class="space-y-8">
+          <div class="mb-8">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+              Enterprise <span class="text-orange-600">Software</span> Development
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Enhance your business with our Enterprise Software Development services. We create tailored solutions that precisely meet your needs, providing scalable and robust software. This ensures efficiency in your operations, adapting seamlessly to the dynamic business landscape.
+            </p>
+          </div>
+          
+          <!-- Service Features -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Tailored Development</h3>
+                <p class="text-gray-600">Custom solutions designed to meet specific requirements.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Scalability</h3>
+                <p class="text-gray-600">Future-proof software capable of growing with your business.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Operational Efficiency</h3>
+                <p class="text-gray-600">Streamlined processes for enhanced productivity.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Cutting-edge Technology</h3>
+                <p class="text-gray-600">Utilizing the latest advancements for optimal results.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Image/Visual -->
+        <div class="relative">
+          <div class="relative z-10">
+            <div class="bg-gradient-to-br from-orange-50 to-blue-50 rounded-3xl p-12 shadow-2xl">
+              <div class="text-center">
+                <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-orange-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-building text-white text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Enterprise Solutions</h3>
+                <p class="text-gray-600 mb-6">Transform your business with scalable enterprise software solutions</p>
+                <button class="bg-orange-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-orange-700 transition-colors shadow-lg">
+                  Learn More
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Background decoration -->
+          <div class="absolute -top-8 -right-8 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-50"></div>
+          <div class="absolute -bottom-8 -left-8 w-64 h-64 bg-orange-100 rounded-full blur-3xl opacity-50"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What Services We Provide Section -->
+  <section id="services-section" class="py-20 px-6 lg:px-20 bg-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Content -->
+        <div class="space-y-8">
+          <div class="mb-8">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+              What <span class="text-orange-600">services</span> do we provide?
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              We provide a 'digital mindset' that combines strategic, creative, technical, analytical, and functional skills to create high-quality digital optimal solutions, quickly, efficiently, and reliably with agile delivery. Our Industry-focused, business operations automation solutions can help you define your business strategy, road map, and business case for the digital age.
+            </p>
+          </div>
+          
+          <!-- Service List -->
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Advisory & Strategy</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Enterprise Software Development</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Dedicated Development Teams</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Mobile App Development</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Advisory and Solution Strategy</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">QA/Testing/Data Migrations</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Application Software Development</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Application Management</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Global IT Implementation Projects</h3>
+            </div>
+            
+            <div class="flex items-center gap-3 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-arrow-right text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Cloud Data Management And Analytics</h3>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Visual -->
+        <div class="relative">
+          <div class="relative z-10">
+            <div class="bg-gradient-to-br from-blue-50 to-orange-50 rounded-3xl p-12 shadow-2xl">
+              <div class="text-center">
+                <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-blue-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-cogs text-white text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Complete Digital Solutions</h3>
+                <p class="text-gray-600 mb-6">End-to-end services for your digital transformation journey</p>
+                <button class="bg-gradient-to-r from-blue-600 to-orange-500 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
+                  Explore All Services
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Background decoration -->
+          <div class="absolute -top-8 -right-8 w-64 h-64 bg-orange-100 rounded-full blur-3xl opacity-50"></div>
+          <div class="absolute -bottom-8 -left-8 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-50"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dedicated Development Teams Section -->
+  <section id="dedicated-teams-section" class="py-20 px-6 lg:px-20 bg-gray-50 relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Content -->
+        <div class="space-y-8">
+          <div class="mb-8">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+              Dedicated <span class="text-orange-600">Development</span> Teams
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Experience exceptional flexibility and efficiency with our Dedicated Development Teams. Our skilled professionals work exclusively on your project, promoting seamless collaboration and accelerating development cycles.
+            </p>
+          </div>
+          
+          <!-- Service Features -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Skilled Professionals</h3>
+                <p class="text-gray-600">Access to a dedicated team of experienced developers.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Flexible Scaling</h3>
+                <p class="text-gray-600">Easily adjust team size based on project requirements.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Cost-Effective</h3>
+                <p class="text-gray-600">Optimize costs with a dedicated team as an extension of your business.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Agile Development</h3>
+                <p class="text-gray-600">Rapid cycles and adaptive project management.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Image -->
+        <div class="relative">
+          <div class="relative z-10">
+            <img src="https://zilon.com/wp-content/uploads/2023/11/MicrosoftTeams-image.png" alt="Dedicated Development Teams" class="w-full h-auto rounded-3xl shadow-2xl">
+          </div>
+          <!-- Background decoration -->
+          <div class="absolute -top-8 -right-8 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-50"></div>
+          <div class="absolute -bottom-8 -left-8 w-64 h-64 bg-orange-100 rounded-full blur-3xl opacity-50"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile App Development Section -->
+  <section id="mobile-app-section" class="py-20 px-6 lg:px-20 bg-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Image -->
+        <div class="relative">
+          <div class="relative z-10">
+            <img src="https://zilon.com/wp-content/uploads/2023/11/MicrosoftTeams-image-2.png" alt="Mobile App Development" class="w-full h-auto rounded-3xl shadow-2xl">
+          </div>
+          <!-- Background decoration -->
+          <div class="absolute -top-8 -right-8 w-64 h-64 bg-purple-100 rounded-full blur-3xl opacity-50"></div>
+          <div class="absolute -bottom-8 -left-8 w-64 h-64 bg-green-100 rounded-full blur-3xl opacity-50"></div>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="space-y-8">
+          <div class="mb-8">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+              Mobile <span class="text-orange-600">App</span> Development
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Stay at the forefront of the mobile era with our top-notch Mobile App Development services. We bring concepts to life with user-friendly and innovative mobile applications designed for both iOS and Android platforms.
+            </p>
+          </div>
+          
+          <!-- Service Features -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Cross-platform Solutions</h3>
+                <p class="text-gray-600">Reach a broader audience with cross-platform app development.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">User-Centric Design</h3>
+                <p class="text-gray-600">Intuitive interfaces for an enhanced user experience.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Scalability</h3>
+                <p class="text-gray-600">Apps designed to grow seamlessly with your user base.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Quality Assurance</h3>
+                <p class="text-gray-600">Rigorous testing for flawless performance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advisory and Solution Strategy Section -->
+  <section id="advisory-section" class="py-20 px-6 lg:px-20 bg-gray-50 relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Content -->
+        <div class="space-y-8">
+          <div class="mb-8">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+              <span class="text-orange-600">Advisory and Solution</span> Strategy
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Navigate the complexities of IT with our Advisory and Solution Strategy services. Our experts provide strategic guidance, empowering you to make informed decisions for sustainable growth.
+            </p>
+          </div>
+          
+          <!-- Service Features -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Tailored Strategies</h3>
+                <p class="text-gray-600">Customized plans aligned with your business objectives.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Risk Mitigation</h3>
+                <p class="text-gray-600">Identification and mitigation of potential IT risks.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Technology Roadmap</h3>
+                <p class="text-gray-600">Clear roadmaps for technology adoption and upgrades.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Operational Optimization</h3>
+                <p class="text-gray-600">Streamlined processes for maximum efficiency.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Image -->
+        <div class="relative">
+          <div class="relative z-10">
+            <img src="https://zilon.com/wp-content/uploads/2021/12/Agility.png" alt="Advisory and Solution Strategy" class="w-full h-auto rounded-3xl shadow-2xl">
+          </div>
+          <!-- Background decoration -->
+          <div class="absolute -top-8 -right-8 w-64 h-64 bg-indigo-100 rounded-full blur-3xl opacity-50"></div>
+          <div class="absolute -bottom-8 -left-8 w-64 h-64 bg-pink-100 rounded-full blur-3xl opacity-50"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QA/Testing/Data Migrations Section -->
+  <section id="qa-testing-section" class="py-20 px-6 lg:px-20 bg-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Content -->
+        <div class="space-y-8">
+          <div class="mb-8">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+              QA / <span class="text-orange-600">Testing</span> / Data Migrations
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Ensure the reliability of your systems with our QA/Testing/Data Migrations services. From rigorous testing to seamless data migrations, we guarantee the integrity and performance of your IT infrastructure.
+            </p>
+          </div>
+          
+          <!-- Service Features -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Comprehensive Testing</h3>
+                <p class="text-gray-600">Rigorous testing protocols for software reliability.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Data Migration Expertise</h3>
+                <p class="text-gray-600">Seamless and secure migration of data.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Quality Assurance</h3>
+                <p class="text-gray-600">Ensuring systems meet the highest standards.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mt-1 group-hover:bg-orange-600 transition-colors">
+                <i class="fas fa-check text-orange-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Performance Optimization</h3>
+                <p class="text-gray-600">Identifying and resolving bottlenecks for optimal performance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Content - Global IT Implementation -->
+        <div class="space-y-8">
+          <div class="mb-8">
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+              Global IT <span class="text-orange-600">Implementation</span> Projects
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Embark on successful global IT projects with our expertise in Global IT Implementation. We handle the complexities of international projects, ensuring seamless integration and optimal performance.
+            </p>
+          </div>
+          
+          <!-- Service Features -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mt-1 group-hover:bg-blue-600 transition-colors">
+                <i class="fas fa-check text-blue-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Global Expertise</h3>
+                <p class="text-gray-600">Extensive experience managing projects across borders.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mt-1 group-hover:bg-blue-600 transition-colors">
+                <i class="fas fa-check text-blue-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Cultural Adaptability</h3>
+                <p class="text-gray-600">Tailoring solutions to diverse cultural and business environments.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mt-1 group-hover:bg-blue-600 transition-colors">
+                <i class="fas fa-check text-blue-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Efficient Deployment</h3>
+                <p class="text-gray-600">Streamlined processes for quick and efficient project delivery.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4 group">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mt-1 group-hover:bg-blue-600 transition-colors">
+                <i class="fas fa-check text-blue-600 text-sm group-hover:text-white transition-colors"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Continuous Support</h3>
+                <p class="text-gray-600">Ongoing support for sustained success.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Testimonials Section -->
+  <section id="testimonials-section" class="py-20 px-6 lg:px-20 bg-gray-50 relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+          What our <span class="text-orange-600">Clients</span> say
+        </h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Solve your project's problems with our dedicated team's services, build a mobile app that ticks all boxes, finish the digital transformation with our spot-on IT consulting. Zilon's software development services.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left - Client Logos -->
+        <div>
+          <div class="grid grid-cols-3 gap-6 mb-8">
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-8-copy-p3f6yx7bisn2z1x32qi5nym70yylmved47x7zxt4z0.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-6-p3f6yudtknpip3x8pt6qrq7yzc2j2mqlepcvvqt0l2.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-4-p3f6yrkartmqbhpoox7tdislljo6dg3i1xvgupv6b2.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-3-p3f6ypomxw091z9q33al2ek19u8ukf6s91irsbsrz2.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-11-p3f6ynsxwjed8gfs6jkh1ol7dd8ivnb6v1nmeie8w2.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-2-p3f6yk1ltrd84hf4tu5hzc7fpfzts4b8lakhpindva.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-7-p3f6yi5whvuuxh09nqt8ktssxkv1lmrtdvbwkxc0c6.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-5-p3f6yan7mgbdwnx6l95mlw2fss2230qvkotf9b6lyk.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex items-center justify-center">
+              <img src="https://zilon.com/wp-content/uploads/elementor/thumbs/Layer-9-p3f6yeejx4ixdmr3q2aq2c7iccho6m64kse3aizkus.png" alt="Client Logo" class="h-12 w-auto filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right - Testimonials -->
+        <div class="space-y-8">
+          <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <p class="text-gray-700 text-lg mb-6 italic">
+              "We thank Zilon Team for excellent quality in POS Software and they were available 24×7 to support our deployment project"
+            </p>
+            <div class="flex items-center gap-4">
+              <img src="http://zilon.com/wp-content/uploads/2021/03/Family-Thrift-Testimonial.png" alt="Mike" class="w-16 h-16 rounded-full">
+              <div>
+                <p class="font-bold text-gray-900">Mike</p>
+                <p class="text-gray-600">CEO, Family Thrift</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <p class="text-gray-700 text-lg mb-6 italic">
+              "Zilon team has done an outstanding job in developing automation solutions for our 32 stores."
+            </p>
+            <div class="flex items-center gap-4">
+              <img src="http://zilon.com/wp-content/uploads/2021/03/rms.png" alt="Loy Owens" class="w-16 h-16 rounded-full">
+              <div>
+                <p class="font-bold text-gray-900">Loy Owens</p>
+                <p class="text-gray-600">CEO, RMS</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section id="contact-section" class="py-20 px-6 lg:px-20 bg-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 mb-4">
+          <span class="text-4xl font-black text-gray-900">H</span>
+          <span class="text-4xl font-black text-orange-600 underline">ire</span>
+          <span class="text-4xl font-black text-gray-900">us</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 leading-tight">
+          Tell Us About Your Project
+        </h2>
+      </div>
+      
+      <div class="max-w-2xl mx-auto">
+        <form class="space-y-6">
+          <div>
+            <select class="w-full px-6 py-4 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all bg-white">
+              <option>I am interested in</option>
+              <option>Services</option>
+              <option>Mobile App Development</option>
+              <option>Enterprise Software Development</option>
+              <option>Web Development</option>
+              <option>Dedicated Team</option>
+              <option>IT Consulting</option>
+              <option>Internet of Things</option>
+              <option>Cloud Computing</option>
+              <option>Artificial Intelligence</option>
+              <option>Mobile Computing</option>
+              <option>UX/UI Design</option>
+            </select>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="email" placeholder="Email *" class="w-full px-6 py-4 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all bg-white">
+            <input type="tel" placeholder="Work Phone *" class="w-full px-6 py-4 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all bg-white">
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="text" placeholder="Company *" class="w-full px-6 py-4 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all bg-white">
+            <input type="text" placeholder="First Name *" class="w-full px-6 py-4 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all bg-white">
+          </div>
+          
+          <div>
+            <input type="text" placeholder="Last Name *" class="w-full px-6 py-4 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all bg-white">
+          </div>
+          
+          <div>
+            <textarea placeholder="Message..." rows="6" class="w-full px-6 py-4 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all bg-white resize-none"></textarea>
+          </div>
+          
+          <div class="flex items-center gap-4">
+            <input type="text" placeholder="11+4=?" class="w-24 px-4 py-2 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all bg-white">
+            <span class="text-gray-600">Security question</span>
+          </div>
+          
+          <button type="submit" class="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-orange-700 hover:to-orange-600 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+            TALK TO OUR TEAM
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Footer -->
+  <footer class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2H6zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+    
+    <!-- Top Border Accent -->
+    <div class="h-1 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600"></div>
+    
+    <!-- Main Footer Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-20 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        
+        <!-- Company Info -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white shadow-lg">N</div>
+            <div>
+              <h3 class="font-bold text-xl tracking-tight">Noshahi Developers</h3>
+              <p class="text-orange-400 text-sm font-semibold">Inc.,</p>
+            </div>
+          </div>
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Transforming businesses through innovative software solutions and cutting-edge technology. Your trusted partner in digital excellence.
+          </p>
+          <div class="flex gap-4">
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-600 transition-colors">
+              <i class="fab fa-facebook-f text-gray-400 hover:text-white"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-600 transition-colors">
+              <i class="fab fa-twitter text-gray-400 hover:text-white"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-600 transition-colors">
+              <i class="fab fa-linkedin-in text-gray-400 hover:text-white"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-600 transition-colors">
+              <i class="fab fa-github text-gray-400 hover:text-white"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div>
+          <h4 class="font-bold text-lg mb-6">Quick Links</h4>
+          <div class="space-y-3">
+            <a href="index.html" class="block text-gray-400 hover:text-orange-400 transition">Home</a>
+            <a href="about.html" class="block text-gray-400 hover:text-orange-400 transition">About Us</a>
+            <a href="services.html" class="block text-gray-400 hover:text-orange-400 transition">Services</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition">Portfolio</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition">Contact</a>
+          </div>
+        </div>
+        
+        <!-- Services -->
+        <div>
+          <h4 class="font-bold text-lg mb-6">Services</h4>
+          <div class="space-y-3">
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition">Web Development</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition">Mobile Apps</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition">AI Solutions</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition">Cloud Services</a>
+          </div>
+        </div>
+        
+        <!-- Contact -->
+        <div>
+          <h4 class="font-bold text-lg mb-6">Connect</h4>
+          <div class="space-y-3">
+            <a href="mailto:info@noshahidevelopers.com" class="flex items-center gap-2 text-gray-400 hover:text-orange-400 transition">
+              <i class="fas fa-envelope text-sm"></i>
+              info@noshahi.com
+            </a>
+            <a href="tel:+1234567890" class="flex items-center gap-2 text-gray-400 hover:text-orange-400 transition">
+              <i class="fas fa-phone text-sm"></i>
+              +1 (234) 567-890
+            </a>
+            <div class="flex items-center gap-2 text-gray-400">
+              <i class="fas fa-map-marker-alt text-sm"></i>
+              <span>United States</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bottom Bar -->
+      <div class="border-t border-gray-700 mt-12 pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-gray-400 text-sm">
+            © 2024 Noshahi Developers Inc. All rights reserved.
+          </p>
+          <div class="flex gap-6 text-sm">
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition">Privacy Policy</a>
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition">Terms of Service</a>
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+    document.addEventListener('mousemove', (e) => {
+      cursorDot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+      cursorOutline.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursorOutline.style.transform = `scale(1.5)`; cursorOutline.style.borderColor = 'orange'; });
+      el.addEventListener('mouseleave', () => { cursorOutline.style.transform = `scale(1)`; cursorOutline.style.borderColor = 'rgba(79, 70, 229, 0.4)'; });
+    });
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('mainNav');
+      if (window.scrollY > 50) nav.classList.add('shadow-md');
+      else nav.classList.remove('shadow-md');
+    });
+    
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Hero animations
+    gsap.fromTo("h1", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "back.out(1)", delay: 0.2 });
+    gsap.fromTo("p", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.8 });
+    
+    // Scroll-triggered animations
+    gsap.utils.toArray(".group").forEach((item, i) => {
+      gsap.fromTo(item, { y: 50, opacity: 0 }, { 
+        y: 0, 
+        opacity: 1, 
+        duration: 0.7, 
+        scrollTrigger: { 
+          trigger: item, 
+          start: "top 85%", 
+          toggleActions: "play none none reverse" 
+        }, 
+        delay: i * 0.1 
+      });
+    });
+    
+    // Enterprise section animations
+    gsap.fromTo("#enterprise-section .group", { y: 50, opacity: 0 }, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.7, 
+      scrollTrigger: { 
+        trigger: "#enterprise-section", 
+        start: "top 80%", 
+        toggleActions: "play none none reverse" 
+      }
+    });
+    
+    // Services section animations
+    gsap.fromTo("#services-section .group", { y: 50, opacity: 0 }, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.7, 
+      scrollTrigger: { 
+        trigger: "#services-section", 
+        start: "top 80%", 
+        toggleActions: "play none none reverse" 
+      }
+    });
+    
+    // Dedicated teams section animations
+    gsap.fromTo("#dedicated-teams-section .group", { y: 50, opacity: 0 }, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.7, 
+      scrollTrigger: { 
+        trigger: "#dedicated-teams-section", 
+        start: "top 80%", 
+        toggleActions: "play none none reverse" 
+      }
+    });
+    
+    // Mobile app section animations
+    gsap.fromTo("#mobile-app-section .group", { y: 50, opacity: 0 }, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.7, 
+      scrollTrigger: { 
+        trigger: "#mobile-app-section", 
+        start: "top 80%", 
+        toggleActions: "play none none reverse" 
+      }
+    });
+    
+    // Advisory section animations
+    gsap.fromTo("#advisory-section .group", { y: 50, opacity: 0 }, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.7, 
+      scrollTrigger: { 
+        trigger: "#advisory-section", 
+        start: "top 80%", 
+        toggleActions: "play none none reverse" 
+      }
+    });
+    
+    // QA/Testing section animations
+    gsap.fromTo("#qa-testing-section .group", { y: 50, opacity: 0 }, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.7, 
+      scrollTrigger: { 
+        trigger: "#qa-testing-section", 
+        start: "top 80%", 
+        toggleActions: "play none none reverse" 
+      }
+    });
+    
+    // Testimonials section animations
+    gsap.fromTo("#testimonials-section .group", { y: 50, opacity: 0 }, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.7, 
+      scrollTrigger: { 
+        trigger: "#testimonials-section", 
+        start: "top 80%", 
+        toggleActions: "play none none reverse" 
+      }
+    });
+    
+    // Contact section animations
+    gsap.fromTo("#contact-section .group", { y: 50, opacity: 0 }, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.7, 
+      scrollTrigger: { 
+        trigger: "#contact-section", 
+        start: "top 80%", 
+        toggleActions: "play none none reverse" 
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive | Noshahi Developers Inc</title>
+    <meta name="description"
+        content="Immersive digital archive of NDI. Experience future-ready architecture and urban engineering.">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" crossorigin="anonymous"
+        referrerpolicy="no-referrer">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="portfolio.css">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- NAV -->
+    <div class="nav">
+
+        <div class="logo">
+            <a href="index.html"><img src="img/ndi-logo.png" alt="Noshahi Developers"></a>
+        </div>
+
+        <!-- TOGGLE BUTTON -->
+        <div class="menu-toggle" id="menuToggle">
+            ☰
+        </div>
+
+        <!-- MENU -->
+        <div class="nav-links" id="navLinks">
+            <div id="closeMenu">✖</div>
+            <a href="index.html">Home</a>
+            <a href="project.html">Projects</a>
+            <a href="services.html">Services</a>
+            <a href="blog.html">Blog</a>
+            <a href="about.html">About</a>
+            <a href="portfolio.html" class="active">Portfolio</a>
+            <a href="contact.html">Contact</a>
+        </div>
+
+    </div>
+
+    <!-- ===== PORTFOLIO HERO ===== -->
+    <section class="hero-standard">
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-video-wrap">
+            <video autoplay muted loop playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-digital-technology-background-with-glowing-particles-41221-large.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-standard-left" data-aos="fade-right">
+            <span class="tag">Digital Archive</span>
+            <h1>Architecting <span class="highlight">Innovation</span></h1>
+            <p>Innovate. Optimize. Automate.</p>
+            <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
+                <a href="#projects-grid" class="btn-primary">Explore Projects</a>
+                <a href="contact.html" class="btn-outline" style="color: azure;">Start Project</a>
+            </div>
+        </div>
+
+        
+
+    </section>
+
+    <!-- ===== BENTO GRID SECTION ===== -->
+    <section class="section-bento" id="projects-grid">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="reveal-text">Project <span class="text-gold">Exhibition</span></h2>
+                <div class="filter-pills reveal">
+                    <button class="pill active" data-category="all">All</button>
+                    <button class="pill" data-category="real-estate">Real Estate</button>
+                    <button class="pill" data-category="commercial">Commercial</button>
+                    <button class="pill" data-category="urban">Urban</button>
+                </div>
+            </div>
+
+            <div class="bento-grid">
+                <!-- Large Featured Item -->
+                <div class="bento-item" data-category="real-estate">
+                    <div class="item-inner tilt-element">
+                        <img src="img/luxury-villas.jpg" alt="Luxury Villas">
+                        <div class="item-overlay glass">
+                            <span class="item-tag">Signature</span>
+                            <h3>Royal Residency</h3>
+                            <p>Smart-enabled luxury living at the edge of tomorrow.</p>
+                            <a href="project.html" class="item-link">Explore Case <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tall Item -->
+                <div class="bento-item" data-category="commercial">
+                    <div class="item-inner tilt-element">
+                        <img src="img/commercial-tower.jpg" alt="Commercial Tower">
+                        <div class="item-overlay glass">
+                            <span class="item-tag">High-Rise</span>
+                            <h3>Global Tech Hub</h3>
+                            <p>An ecosystem for innovation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wide Item -->
+                <div class="bento-item" data-category="urban">
+                    <div class="item-inner tilt-element">
+                        <img src="img/smart-housing.jpg" alt="Smart Housing">
+                        <div class="item-overlay glass">
+                            <span class="item-tag">Urban Scale</span>
+                            <h3>Eco Smart City</h3>
+                            <p>Redefining sustainability in urban development.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Standard Item -->
+                <div class="bento-item" data-category="real-estate">
+                    <div class="item-inner tilt-element">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&amp;fit=crop&amp;q=80&amp;w=800"
+                            alt="Apartment">
+                        <div class="item-overlay glass">
+                            <h3>Horizon Heights</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Standard Item -->
+                <div class="bento-item" data-category="commercial">
+                    <div class="item-inner tilt-element">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&amp;fit=crop&amp;q=80&amp;w=800"
+                            alt="Office">
+                        <div class="item-overlay glass">
+                            <h3>Vertex Plaza</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TECH DNA (REDESIGNED) ===== -->
+    <section class="section-tech-modern" id="tech-dna">
+        <div class="tech-dna-title-bg">TECH DNA</div>
+        <div class="container">
+            <div class="tech-header" data-aos="fade-right">
+                <span class="eyebrow">Innovation Core</span>
+                <h2 class="modern-title" style="color: rgb(255, 196, 0);">Our <span class="text-gold">Tech</span> Stack</h2>
+                <p>Decoding the future of architectural engineering through advanced digital integration.</p>
+            </div>
+
+            <div class="tech-cards-modern">
+                <!-- Card 1 -->
+                <div class="tech-card-glass" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-inner">
+                        <div class="tech-icon-circle"><i class="fas fa-cube"></i></div>
+                        <div class="tech-info">
+                            <h4>BIM 360</h4>
+                            <p>Precise 3D modeling for error-free construction and data-driven planning.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="tech-card-glass" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-inner">
+                        <div class="tech-icon-circle"><i class="fas fa-leaf"></i></div>
+                        <div class="tech-info">
+                            <h4>Eco-Materials</h4>
+                            <p>Low-carbon footprint materials engineered for structural longevity.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="tech-card-glass" data-aos="fade-up" data-aos-delay="300">
+                    <div class="glass-inner">
+                        <div class="tech-icon-circle"><i class="fas fa-bolt"></i></div>
+                        <div class="tech-info">
+                            <h4>Smart Grid</h4>
+                            <p>Integrating intelligence into infrastructure for energy efficiency.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="tech-card-glass" data-aos="fade-up" data-aos-delay="400">
+                    <div class="glass-inner">
+                        <div class="tech-icon-circle"><i class="fas fa-robot"></i></div>
+                        <div class="tech-info">
+                            <h4>Modular Tech</h4>
+                            <p>Advanced prefabrication systems for lightning-speed project delivery.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="tech-card-glass" data-aos="fade-up" data-aos-delay="500">
+                    <div class="glass-inner">
+                        <div class="tech-icon-circle"><i class="fas fa-microchip"></i></div>
+                        <div class="tech-info">
+                            <h4>AI Diagnostics</h4>
+                            <p>Automated site monitoring and predictive analysis for project health.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="tech-card-glass" data-aos="fade-up" data-aos-delay="600">
+                    <div class="glass-inner">
+                        <div class="tech-icon-circle"><i class="fas fa-shield-halved"></i></div>
+                        <div class="tech-info">
+                            <h4>Smart Safety</h4>
+                            <p>Wearable IoT and real-time alerts for zero-accident safety protocols.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CINEMATIC CTA ===== -->
+    <section class="section-cta-cinematic">
+        <div class="cta-glow-halo"></div>
+        <div class="container">
+            <div class="cta-card-floating" data-aos="flip-up">
+                <div class="cta-content">
+                    <span class="eyebrow" data-aos="fade-down" data-aos-delay="200">Next Chapter</span>
+                    <h2 class="cta-title" style="color: aliceblue;">Build Your <span class="text-gold">Landmark</span>
+                    </h2>
+                    <p class="cta-text">Partner with NDI to transform your vision into a digital-first architectural
+                        reality.</p>
+                    <div class="cta-actions">
+                        <a href="contact.html" class="btn-primary magnetic-btn">Start a Project <i
+                                class="fas fa-paper-plane"></i></a>
+                        <a href="about.html" class="cta-link-secondary">Learn Our Process</a>
+                    </div>
+                </div>
+                <!-- Floating geometric decor -->
+                <div class="cta-decor shape-1"></div>
+                <div class="cta-decor shape-2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PREMIUM FOOTER ===== -->
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <!-- COMPANY -->
+            <div class="footer-col">
+                <h3 class="footer-logo">Noshahi Developers</h3>
+                <p>
+                    Building future spaces with modern planning,
+                    smart construction & trusted development solutions.
+                </p>
+
+                <div class="footer-badges">
+                    <span>Govt Registered</span>
+                    <span>ISO Certified</span>
+                    <span>15+ Years Experience</span>
+                </div>
+            </div>
+
+            <!-- QUICK LINKS -->
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="project.html">Projects</a>
+                <a href="services.html">Services</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="blog.html">Blog</a>
+            </div>
+
+
+            <!-- CONTACT -->
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>Thokar Niaz Baig, Lahore</p>
+                <p>+92 307 5071297</p>
+                <p>noshahidevelopersinc@gmail.com</p>
+
+                <div class="socials">
+                    <a href="https://facebook.com/noshahidevelopers" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://instagram.com/noshahidevelopers" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://linkedin.com/company/noshahidevelopers" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- NEWSLETTER -->
+            <div class="footer-col newsletter">
+                <h4>Project Updates</h4>
+                <p>Get new launch alerts & offers</p>
+
+                <div class="news-box">
+                    <input type="email" placeholder="Enter email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BOTTOM STRIP -->
+        <div class="footer-bottom">
+            © 2026 Noshahi Developers Inc., — All Rights Reserved
+        </div>
+
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="global.js"></script>
+    <script>
+        AOS.init({ duration: 1200, once: true });
+    </script>
+    <script src="script-portfolio.js"></script>
+    <!-- FLOATING ACTIONS -->
+    <div class="floating-actions">
+        <a href="https://wa.me/923075071297" target="_blank" class="fab fab-whatsapp" title="Chat on WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <button id="backToTop" class="fab fab-back-to-top" title="Back to Top">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+    </div>
+
+</body>
+
+</html>

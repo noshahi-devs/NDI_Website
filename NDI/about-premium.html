@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Noshahi Developers Inc.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <style>
+    /* Premium Styles */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .btn-glow {
+      background: linear-gradient(95deg, rgb(255, 167, 4), red);
+      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .btn-glow:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(79, 70, 229, 0.35);
+    }
+    .btn-outline-premium {
+      border: 1px solid #E5E7EB;
+      background: white;
+      transition: all 0.3s;
+    }
+    .btn-outline-premium:hover {
+      border-color: #faa506;
+      background: #F8FAFC;
+      transform: translateY(-4px);
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, #1E293B 0%, orange 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #111827;
+    }
+    /* Custom Cursor */
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: #faa506;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+    }
+    .cursor-outline {
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(250, 165, 6, 0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.2s ease;
+    }
+    /* Premium Background Overlays */
+    .premium-overlay-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(250, 165, 6, 0.1) 0%, 
+        rgba(79, 70, 229, 0.05) 25%, 
+        rgba(255, 255, 255, 0.02) 50%, 
+        rgba(250, 165, 6, 0.05) 75%, 
+        rgba(79, 70, 229, 0.1) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .premium-overlay-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(250, 165, 6, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(250, 165, 6, 0.06) 0%, transparent 50%);
+      background-size: 100% 100%, 100% 100%, 100% 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .premium-overlay-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.02;
+      z-index: 2;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==');
+    }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #faa506; border-radius: 10px; }
+    /* Hero Background */
+    .hero-bg {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%);
+      position: relative;
+      overflow: hidden;
+      height: 120vh;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23faa506" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+      background-size: cover;
+    }
+    /* Animated Background Shapes */
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(250, 165, 6, 0.1), rgba(250, 165, 6, 0.05));
+      filter: blur(40px);
+      animation: float 20s infinite ease-in-out;
+    }
+    .shape-1 {
+      width: 600px;
+      height: 600px;
+      top: -200px;
+      left: -200px;
+      animation-delay: 0s;
+    }
+    .shape-2 {
+      width: 400px;
+      height: 400px;
+      top: 50%;
+      right: -100px;
+      animation-delay: 5s;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
+    }
+    .shape-3 {
+      width: 300px;
+      height: 300px;
+      bottom: -100px;
+      left: 30%;
+      animation-delay: 10s;
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(236, 72, 153, 0.05));
+    }
+    .shape-4 {
+      width: 500px;
+      height: 500px;
+      top: 20%;
+      left: 60%;
+      animation-delay: 15s;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      25% { transform: translate(100px, -100px) rotate(90deg) scale(1.1); }
+      50% { transform: translate(-100px, 100px) rotate(180deg) scale(0.9); }
+      75% { transform: translate(50px, 50px) rotate(270deg) scale(1.05); }
+    }
+    /* Premium Logo Integration */
+    .logo-glow {
+      filter: drop-shadow(0 0 30px rgba(250, 165, 6, 0.5));
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 30px rgba(250, 165, 6, 0.5)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 50px rgba(250, 165, 6, 0.8)); }
+    }
+    /* Enhanced Premium Effects */
+    .premium-text-shadow {
+      text-shadow: 0 0 40px rgba(250, 165, 6, 0.3);
+    }
+    .glass-card-premium {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 2rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    }
+    .stat-card {
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .stat-card:hover {
+      border-color: #faa506;
+      transform: translateY(-8px);
+    }
+    .office-card {
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .office-card:hover {
+      transform: translateY(-12px) scale(1.02);
+    }
+    .form-input {
+      transition: all 0.3s ease;
+      border: 2px solid #E5E7EB;
+    }
+    .form-input:focus {
+      border-color: #faa506;
+      box-shadow: 0 0 0 3px rgba(250, 165, 6, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 overflow-x-hidden">
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+
+  <!-- Premium Navigation (Same as index.html) -->
+  <nav class="fixed top-0 left-0 w-full z-50 py-5 px-8 lg:px-20 transition-all duration-500 bg-white/80 backdrop-blur-md border-b border-gray-100" id="mainNav">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white">N</div>
+        <span class="font-bold text-xl tracking-tight text-gray-900">Noshahi <span class="text-orange-600">Developers Inc.,</span></span>
+      </div>
+      <div class="hidden md:flex gap-8 text-gray-600 font-medium">
+        <a href="index.html" class="hover:text-orange-600 transition">Home</a>
+        <a href="about-premium.html" class="text-orange-600 font-semibold">About</a>
+        <a href="#" class="hover:text-orange-600 transition">Services</a>
+        <a href="#" class="hover:text-orange-600 transition">Products</a>
+        <a href="#" class="hover:text-orange-600 transition">Portfolio</a>
+        <a href="#" class="hover:text-orange-600 transition">Contact</a>
+      </div>
+      <button class="hidden md:block bg-orange-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-700 transition shadow-md hover:shadow-lg">Get in touch</button>
+      <div class="md:hidden text-2xl cursor-pointer text-gray-700">☰</div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-bg flex items-center relative pt-32 pb-20 px-6 lg:px-20 overflow-hidden">
+    <!-- Animated Background Shapes -->
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    <div class="floating-shape shape-4"></div>
+    
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    <div class="premium-overlay-noise"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10 w-full">
+      <div class="text-center text-white">
+        <!-- NDI Logo with Premium Glow -->
+        <div class="mb-12">
+          <img src="img/ndi-logo.png" alt="NDI Logo" class="logo-glow w-32 h-32 mx-auto mb-8">
+          <div class="inline-flex items-center gap-2 glass-card-premium px-8 py-4">
+            <span class="relative flex h-4 w-4"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span><span class="relative inline-flex rounded-full h-4 w-4 bg-orange-400"></span></span>
+            <span class="text-lg uppercase tracking-[0.3em] font-bold text-orange-300">About Our Company</span>
+          </div>
+        </div>
+        
+        <h1 class="section-title text-white mb-8 premium-text-shadow">
+          Engineering <span class="text-orange-400">Digital Excellence</span> Since 2008
+        </h1>
+        
+        <p class="text-2xl text-gray-200 max-w-4xl mx-auto mb-16 leading-relaxed font-light">
+          From a small team of passionate developers to a global technology powerhouse, 
+          we've been transforming ideas into reality for over 15 years with unwavering 
+          commitment to innovation and excellence.
+        </p>
+        
+        <!-- Enhanced Statistics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
+          <div class="glass-card-premium p-8 text-center stat-card">
+            <div class="text-6xl md:text-7xl font-black text-orange-400 mb-3">15+</div>
+            <p class="text-sm uppercase tracking-wider text-orange-300 font-semibold">Years of Innovation</p>
+          </div>
+          <div class="glass-card-premium p-8 text-center stat-card">
+            <div class="text-6xl md:text-7xl font-black text-blue-400 mb-3">500+</div>
+            <p class="text-sm uppercase tracking-wider text-blue-300 font-semibold">Projects Delivered</p>
+          </div>
+          <div class="glass-card-premium p-8 text-center stat-card">
+            <div class="text-6xl md:text-7xl font-black text-green-400 mb-3">150+</div>
+            <p class="text-sm uppercase tracking-wider text-green-300 font-semibold">Global Clients</p>
+          </div>
+          <div class="glass-card-premium p-8 text-center stat-card">
+            <div class="text-6xl md:text-7xl font-black text-purple-400 mb-3">99%</div>
+            <p class="text-sm uppercase tracking-wider text-purple-300 font-semibold">Client Satisfaction</p>
+          </div>
+        </div>
+        
+        <!-- Enhanced CTA Buttons -->
+        <div class="flex flex-wrap gap-8 justify-center">
+          <button class="btn-glow px-12 py-5 rounded-3xl font-bold text-white text-xl flex items-center gap-4 shadow-2xl hover:scale-105 transition-transform">
+            <i class="fas fa-rocket text-2xl"></i> 
+            <span>Start Your Project</span>
+          </button>
+          <button class="glass-card-premium border-2 border-white/30 text-white px-12 py-5 rounded-3xl font-bold text-xl hover:bg-white/10 transition-all duration-300 hover:scale-105 flex items-center gap-4">
+            <i class="fas fa-play-circle text-2xl"></i>
+            <span>Watch Our Story</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Company Story Section -->
+  <section class="py-24 px-6 lg:px-20 bg-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-noise"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="text-center mb-20">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Our Story</span>
+        <h2 class="section-title text-gray-900 mt-4">Transforming <span class="text-gradient">Visions Into Reality</span></h2>
+        <p class="text-gray-600 max-w-2xl mx-auto mt-6">Building the future of technology with innovation, expertise, and unwavering commitment to excellence.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div class="space-y-8">
+          <div class="glass-premium p-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center mb-6">
+              <i class="fas fa-lightbulb text-white text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
+            <p class="text-gray-600 leading-relaxed">
+              At Noshahi Developers Inc., we believe in the power of technology to transform businesses and improve lives. 
+              Our mission is to deliver innovative software solutions that empower organizations to achieve their full potential 
+              in the digital age.
+            </p>
+          </div>
+          
+          <div class="glass-premium p-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-6">
+              <i class="fas fa-eye text-white text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
+            <p class="text-gray-600 leading-relaxed">
+              To be the global leader in software innovation, creating solutions that not only meet today's needs 
+              but anticipate tomorrow's challenges. We envision a world where technology seamlessly integrates 
+              with business to create unprecedented value.
+            </p>
+          </div>
+          
+          <div class="glass-premium p-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mb-6">
+              <i class="fas fa-shield-alt text-white text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Values</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Innovation, integrity, and excellence guide everything we do. We build lasting partnerships 
+              based on trust, transparency, and mutual success, ensuring our clients achieve their goals 
+              with confidence and peace of mind.
+            </p>
+          </div>
+        </div>
+        
+        <div class="relative">
+          <img src="img/company-story.jpg" alt="Our Story" class="rounded-3xl shadow-2xl w-full object-cover">
+          <div class="absolute -bottom-8 -right-8 bg-gradient-to-br from-orange-600 to-orange-500 rounded-3xl p-8 shadow-xl">
+            <div class="text-white text-center">
+              <i class="fas fa-trophy text-4xl mb-3"></i>
+              <div class="text-3xl font-black">Industry Leader</div>
+              <div class="text-sm font-medium opacity-90">Recognized Excellence</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistics Section -->
+  <section class="py-24 px-6 lg:px-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-noise"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="text-center mb-20">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">By The Numbers</span>
+        <h2 class="section-title text-gray-900 mt-4">Our <span class="text-gradient">Impact</span></h2>
+        <p class="text-gray-600 max-w-2xl mx-auto mt-6">Numbers that speak volumes about our commitment and success.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="glass-premium p-8 text-center stat-card">
+          <div class="text-5xl md:text-6xl font-black text-orange-600 mb-4">500+</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Projects Completed</h3>
+          <p class="text-gray-600">Successfully delivered across various industries and technologies</p>
+        </div>
+        
+        <div class="glass-premium p-8 text-center stat-card">
+          <div class="text-5xl md:text-6xl font-black text-blue-600 mb-4">150+</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Global Clients</h3>
+          <p class="text-gray-600">Trusted by businesses worldwide for their technology needs</p>
+        </div>
+        
+        <div class="glass-premium p-8 text-center stat-card">
+          <div class="text-5xl md:text-6xl font-black text-green-600 mb-4">50+</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Expert Developers</h3>
+          <p class="text-gray-600">Talented professionals dedicated to your success</p>
+        </div>
+        
+        <div class="glass-premium p-8 text-center stat-card">
+          <div class="text-5xl md:text-6xl font-black text-purple-600 mb-4">99%</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Success Rate</h3>
+          <p class="text-gray-600">Consistently exceeding client expectations</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Office Locations Section -->
+  <section class="py-24 px-6 lg:px-20 bg-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-noise"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="text-center mb-20">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Our Offices</span>
+        <h2 class="section-title text-gray-900 mt-4">Global <span class="text-gradient">Presence</span></h2>
+        <p class="text-gray-600 max-w-2xl mx-auto mt-6">Strategically located to serve our global client base effectively.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Houston Office -->
+        <div class="glass-premium p-8 office-card">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+              <i class="fas fa-map-marker-alt text-white text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-gray-900">Houston Office</h3>
+              <p class="text-orange-600 font-semibold">Headquarters</p>
+            </div>
+          </div>
+          
+          <div class="space-y-4 mb-6">
+            <div class="flex items-center gap-3">
+              <i class="fas fa-location-dot text-gray-400 w-5"></i>
+              <span class="text-gray-600">16770 Imperial Valley Dr, Suite 125A, Houston, TX 77060, USA</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-phone text-gray-400 w-5"></i>
+              <span class="text-gray-600">+1 346-970-1510</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-envelope text-gray-400 w-5"></i>
+              <span class="text-gray-600">houston@noshahi.com</span>
+            </div>
+          </div>
+          
+          <div class="h-48 rounded-2xl overflow-hidden mb-6">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3457.2757255547663!2d-95.39737088467639!3d29.942746730324203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640c9e2ecd5dfa5%3A0x88ce4c2939640f5f!2s16770%20Imperial%20Valley%20Dr%20%23125A%2C%20Houston%2C%20TX%2077060%2C%20USA!5e0!3m2!1sen!2s!4v1614179778273!5m2!1sen!2s" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+        
+        <!-- Lahore Office -->
+        <div class="glass-premium p-8 office-card">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+              <i class="fas fa-map-marker-alt text-white text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-gray-900">Lahore Office</h3>
+              <p class="text-blue-600 font-semibold">Development Center</p>
+            </div>
+          </div>
+          
+          <div class="space-y-4 mb-6">
+            <div class="flex items-center gap-3">
+              <i class="fas fa-location-dot text-gray-400 w-5"></i>
+              <span class="text-gray-600">599-Q, Johar Town, Lahore, Pakistan</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-phone text-gray-400 w-5"></i>
+              <span class="text-gray-600">+92-42-35290461</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="fas fa-envelope text-gray-400 w-5"></i>
+              <span class="text-gray-600">lahore@noshahi.com</span>
+            </div>
+          </div>
+          
+          <div class="h-48 rounded-2xl overflow-hidden mb-6">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3403.240762166635!2d74.27252631535049!3d31.462562557141894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919017eba97d197%3A0x84ef3ade4c843a0!2sZilon%20International%2C%20Inc!5e0!3m2!1sen!2sus!4v1614180127681!5m2!1sen!2sus" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="py-24 px-6 lg:px-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-noise"></div>
+    
+    <div class="max-w-4xl mx-auto relative z-10">
+      <div class="text-center mb-20">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Get In Touch</span>
+        <h2 class="section-title text-gray-900 mt-4">Let's <span class="text-gradient">Build Something Amazing</span> Together</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto mt-6">Tell us about your project and we'll help you turn your vision into reality.</p>
+      </div>
+      
+      <div class="glass-premium p-12">
+        <form class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+              <input type="text" class="form-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="John" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+              <input type="text" class="form-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="Doe" required>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+            <input type="email" class="form-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="john@example.com" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Phone *</label>
+            <input type="tel" class="form-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="+1 (555) 123-4567" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Company *</label>
+            <input type="text" class="form-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="Acme Corporation" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">I'm interested in *</label>
+            <select class="form-input w-full px-4 py-3 rounded-xl focus:outline-none" required>
+              <option value="">Select a service</option>
+              <option value="web-development">Web Development</option>
+              <option value="mobile-apps">Mobile Applications</option>
+              <option value="enterprise-software">Enterprise Software</option>
+              <option value="ai-solutions">AI Solutions</option>
+              <option value="cloud-services">Cloud Services</option>
+              <option value="consulting">IT Consulting</option>
+              <option value="dedicated-team">Dedicated Team</option>
+            </select>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+            <textarea class="form-input w-full px-4 py-3 rounded-xl focus:outline-none" rows="5" placeholder="Tell us about your project..."></textarea>
+          </div>
+          
+          <div class="flex items-center gap-3">
+            <input type="checkbox" id="privacy" class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500" required>
+            <label for="privacy" class="text-sm text-gray-600">
+              I agree to the <a href="#" class="text-orange-600 hover:underline">Privacy Policy</a> and <a href="#" class="text-orange-600 hover:underline">Terms of Service</a>
+            </label>
+          </div>
+          
+          <div class="text-center">
+            <button type="submit" class="btn-glow px-12 py-4 rounded-2xl font-bold text-white text-lg shadow-xl">
+              <i class="fas fa-paper-plane mr-3"></i> Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (Same as index.html) -->
+  <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16 relative overflow-hidden">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-noise"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 lg:px-20 relative z-10">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div>
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white">N</div>
+            <span class="font-bold text-xl">Noshahi Developers</span>
+          </div>
+          <p class="text-gray-400">Engineering the intelligent future with innovative software solutions.</p>
+          <div class="flex gap-4 mt-6">
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-600 transition-all duration-300 hover:scale-110">
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-600 transition-all duration-300 hover:scale-110">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-600 transition-all duration-300 hover:scale-110">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-600 transition-all duration-300 hover:scale-110">
+              <i class="fab fa-facebook"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-bold text-lg mb-6 text-orange-400">Quick Links</h4>
+          <div class="space-y-3">
+            <a href="index.html" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">Home</a>
+            <a href="about-premium.html" class="block text-orange-400 font-semibold">About Us</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">Services</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">Products</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">Portfolio</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">Contact</a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-bold text-lg mb-6 text-orange-400">Services</h4>
+          <div class="space-y-3">
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">Enterprise Web</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">SaaS Platforms</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">ERP Solutions</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">AI Applications</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">Mobile Development</a>
+            <a href="#" class="block text-gray-400 hover:text-orange-400 transition-all duration-300 hover:translate-x-2">Cloud Solutions</a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-bold text-lg mb-6 text-orange-400">Get In Touch</h4>
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-orange-600/20 flex items-center justify-center">
+                <i class="fas fa-envelope text-orange-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-400">Email</p>
+                <p class="text-white font-medium">info@noshahi.com</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-orange-600/20 flex items-center justify-center">
+                <i class="fas fa-phone text-orange-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-400">Phone</p>
+                <p class="text-white font-medium">+1 (555) 123-4567</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-orange-600/20 flex items-center justify-center">
+                <i class="fas fa-map-marker-alt text-orange-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-400">Office</p>
+                <p class="text-white font-medium">Silicon Valley, CA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-700 mt-12 pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-gray-400 text-sm">
+            © 2025 Noshahi Developers Inc. All rights reserved. Engineering the Intelligent Future.
+          </p>
+          <div class="flex gap-6 text-sm">
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Privacy Policy</a>
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Terms of Service</a>
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+    document.addEventListener('mousemove', (e) => {
+      cursorDot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+      cursorOutline.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursorOutline.style.transform = `scale(1.5)`; cursorOutline.style.borderColor = 'orange'; });
+      el.addEventListener('mouseleave', () => { cursorOutline.style.transform = `scale(1)`; cursorOutline.style.borderColor = 'rgba(250, 165, 6, 0.5)'; });
+    });
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('mainNav');
+      if (window.scrollY > 50) nav.classList.add('shadow-md');
+      else nav.classList.remove('shadow-md');
+    });
+    
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Hero animations
+    gsap.fromTo(".section-title", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "back.out(1)", delay: 0.2 });
+    gsap.fromTo(".text-xl.text-gray-300", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.8 });
+    
+    // Scroll-triggered animations
+    gsap.utils.toArray(".glass-premium").forEach((card, i) => {
+      gsap.fromTo(card, { y: 50, opacity: 0 }, { 
+        y: 0, 
+        opacity: 1, 
+        duration: 0.7, 
+        scrollTrigger: { 
+          trigger: card, 
+          start: "top 85%", 
+          toggleActions: "play none none reverse" 
+        }, 
+        delay: i * 0.1 
+      });
+    });
+    
+    // Form submission
+    document.querySelector('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('✨ Thank you for your interest! Our team will contact you within 24 hours.');
+      e.target.reset();
+    });
+    
+    // Button interactions
+    document.querySelectorAll('.btn-glow, button').forEach(btn => {
+      btn.addEventListener('click', () => { 
+        if (!btn.closest('form')) {
+          alert('🚀 Welcome to Noshahi Developers — schedule your personalized consultation!');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

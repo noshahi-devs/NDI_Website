@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions - Noshahi Developers Inc.</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            background: #ffffff;
+        }
+        
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #faa506;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+        
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #faa506;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #faa506;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e89404;
+        }
+        
+        /* Premium Background Overlays */
+        .premium-overlay-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(250, 165, 6, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            pointer-events: none;
+        }
+        
+        .premium-overlay-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(250, 165, 6, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .premium-overlay-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            box-shadow: inset 0 0 200px rgba(250, 165, 6, 0.05);
+            pointer-events: none;
+        }
+        
+        /* Floating Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* 3D Hover Effects */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(5deg) rotateX(-5deg) scale(1.02);
+        }
+        
+        /* Glow Effects */
+        .glow-orange {
+            box-shadow: 0 0 30px rgba(250, 165, 6, 0.3);
+        }
+        
+        .glow-blue {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #faa506 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Glass Morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 overflow-x-hidden">
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    
+    <!-- Premium Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 py-5 px-8 lg:px-20 transition-all duration-500 bg-white/80 backdrop-blur-xl border-b border-orange-100 shadow-lg" id="mainNav">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white shadow-lg">N</div>
+                <span class="font-bold text-xl tracking-tight text-gray-900">Noshahi <span class="text-orange-600">Developers Inc.,</span></span>
+            </div>
+            <div class="hidden md:flex gap-8 text-gray-600 font-medium">
+                <a href="index.html" class="hover:text-orange-600 transition">Home</a>
+                <a href="about.html" class="hover:text-orange-600 transition">About</a>
+                <a href="services.html" class="hover:text-orange-600 transition">Services</a>
+                <a href="solutions.html" class="text-orange-600 font-semibold">Solutions</a>
+                <a href="#" class="hover:text-orange-600 transition">Products</a>
+                <a href="#" class="hover:text-orange-600 transition">Portfolio</a>
+                <a href="#" class="hover:text-orange-600 transition">Contact</a>
+            </div>
+            <button onclick="window.location.href='#contact-form'" class="hidden md:block bg-gradient-to-r from-orange-600 to-orange-500 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:from-orange-700 hover:to-orange-600 transition shadow-md hover:shadow-lg">
+                Get Started
+            </button>
+            <div class="md:hidden text-2xl cursor-pointer text-gray-700">☰</div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center px-6 lg:px-20 pt-32 pb-20 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-orange-50">
+        <div class="premium-overlay-gradient"></div>
+        <div class="premium-overlay-pattern"></div>
+        <div class="premium-overlay-glow"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-3 bg-gradient-to-r from-orange-100 to-orange-50 text-orange-800 px-6 py-3 rounded-full text-sm font-bold mb-8 shadow-lg border border-orange-200">
+                    <span class="w-3 h-3 bg-orange-600 rounded-full animate-pulse"></span>
+                    Premium Solutions
+                    <i class="fas fa-lightbulb text-orange-600"></i>
+                </div>
+                
+                <h1 class="text-6xl md:text-7xl lg:text-8xl font-black text-gray-900 mb-8 leading-tight">
+                    Innovative <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600">Solutions</span>
+                    <br>
+                    for Your Business
+                </h1>
+                
+                <p class="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-medium mb-12">
+                    Transform your enterprise with cutting-edge technology solutions tailored to accelerate growth, 
+                    optimize operations, and drive digital innovation across all industries.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+                    <a href="#solutions-overview" class="inline-block bg-gradient-to-r from-orange-600 to-orange-500 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:from-orange-700 hover:to-orange-600 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border border-orange-400">
+                        <i class="fas fa-rocket mr-2"></i>
+                        Explore Solutions
+                    </a>
+                    <a href="#contact-form" class="inline-block bg-white/80 backdrop-blur text-gray-900 px-10 py-5 rounded-2xl font-bold text-lg border-2 border-orange-200 hover:border-orange-500 hover:text-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-calendar mr-2"></i>
+                        Schedule Consultation
+                    </a>
+                </div>
+                
+                <!-- Hero Stats -->
+                <div class="flex justify-center gap-12">
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-orange-600 mb-2">500+</div>
+                        <div class="text-sm text-gray-600 font-medium">Solutions Delivered</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-orange-600 mb-2">25+</div>
+                        <div class="text-sm text-gray-600 font-medium">Industries Served</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-orange-600 mb-2">99%</div>
+                        <div class="text-sm text-gray-600 font-medium">Client Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Overview -->
+    <section id="solutions-overview" class="py-20 px-6 lg:px-20 bg-white relative overflow-hidden">
+        <div class="premium-overlay-gradient"></div>
+        <div class="premium-overlay-pattern"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
+                    Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-500">Solution</span> Categories
+                </h2>
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-medium">
+                    Comprehensive solutions designed to address your most complex business challenges
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Enterprise Solutions -->
+                <div class="group relative bg-gradient-to-br from-orange-50 to-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-orange-100 card-3d">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-orange-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <i class="fas fa-building text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Enterprise Solutions</h3>
+                    <p class="text-gray-600 text-center mb-6">Scalable enterprise software for large organizations</p>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-orange-600 text-sm"></i>
+                            <span class="text-sm">ERP Systems</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-orange-600 text-sm"></i>
+                            <span class="text-sm">CRM Platforms</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-orange-600 text-sm"></i>
+                            <span class="text-sm">Business Intelligence</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Mobile Solutions -->
+                <div class="group relative bg-gradient-to-br from-blue-50 to-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-blue-100 card-3d">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-blue-600 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Mobile Solutions</h3>
+                    <p class="text-gray-600 text-center mb-6">Native and cross-platform mobile applications</p>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-blue-600 text-sm"></i>
+                            <span class="text-sm">iOS Apps</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-blue-600 text-sm"></i>
+                            <span class="text-sm">Android Apps</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-blue-600 text-sm"></i>
+                            <span class="text-sm">React Native</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Cloud Solutions -->
+                <div class="group relative bg-gradient-to-br from-green-50 to-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-green-100 card-3d">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-green-600 to-green-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <i class="fas fa-cloud text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Cloud Solutions</h3>
+                    <p class="text-gray-600 text-center mb-6">Cloud-native applications and infrastructure</p>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-green-600 text-sm"></i>
+                            <span class="text-sm">AWS Services</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-green-600 text-sm"></i>
+                            <span class="text-sm">Azure Platform</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-green-600 text-sm"></i>
+                            <span class="text-sm">Google Cloud</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- AI Solutions -->
+                <div class="group relative bg-gradient-to-br from-purple-50 to-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-purple-100 card-3d">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-purple-600 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <i class="fas fa-brain text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">AI Solutions</h3>
+                    <p class="text-gray-600 text-center mb-6">Artificial intelligence and machine learning</p>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-purple-600 text-sm"></i>
+                            <span class="text-sm">Machine Learning</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-purple-600 text-sm"></i>
+                            <span class="text-sm">Natural Language</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fas fa-check text-purple-600 text-sm"></i>
+                            <span class="text-sm">Computer Vision</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industry Solutions -->
+    <section class="py-20 px-6 lg:px-20 bg-gradient-to-br from-gray-50 via-white to-orange-50 relative overflow-hidden">
+        <div class="premium-overlay-gradient"></div>
+        <div class="premium-overlay-pattern"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
+                    Industry-Specific <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-500">Solutions</span>
+                </h2>
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-medium">
+                    Tailored solutions designed to meet the unique challenges of your industry
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Healthcare -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300">
+                    <div class="w-20 h-20 mb-6 bg-gradient-to-br from-red-100 to-red-50 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-heartbeat text-red-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Healthcare</h3>
+                    <p class="text-gray-600 mb-6">Digital health solutions that improve patient care and streamline operations</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-red-600"></i>
+                            <span class="text-gray-700">Electronic Health Records</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-red-600"></i>
+                            <span class="text-gray-700">Telemedicine Platforms</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-red-600"></i>
+                            <span class="text-gray-700">Medical Billing Systems</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Finance -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300">
+                    <div class="w-20 h-20 mb-6 bg-gradient-to-br from-green-100 to-green-50 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-chart-line text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Finance</h3>
+                    <p class="text-gray-600 mb-6">Secure fintech solutions for modern banking and financial services</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-green-600"></i>
+                            <span class="text-gray-700">Digital Banking</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-green-600"></i>
+                            <span class="text-gray-700">Payment Gateways</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-green-600"></i>
+                            <span class="text-gray-700">Risk Management</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Retail -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300">
+                    <div class="w-20 h-20 mb-6 bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-blue-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Retail</h3>
+                    <p class="text-gray-600 mb-6">E-commerce and retail management solutions for modern commerce</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600"></i>
+                            <span class="text-gray-700">E-commerce Platforms</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600"></i>
+                            <span class="text-gray-700">Inventory Management</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600"></i>
+                            <span class="text-gray-700">POS Systems</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="py-20 px-6 lg:px-20 bg-white relative overflow-hidden">
+        <div class="premium-overlay-gradient"></div>
+        <div class="premium-overlay-pattern"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
+                    Cutting-Edge <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-500">Technology Stack</span>
+                </h2>
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-medium">
+                    Leveraging the latest technologies to build robust, scalable solutions
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
+                <div class="text-center group">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                        <i class="fab fa-react text-3xl text-gray-700 group-hover:text-orange-600"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">React</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                        <i class="fab fa-node-js text-3xl text-gray-700 group-hover:text-orange-600"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Node.js</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                        <i class="fab fa-python text-3xl text-gray-700 group-hover:text-orange-600"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Python</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                        <i class="fab fa-aws text-3xl text-gray-700 group-hover:text-orange-600"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">AWS</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                        <i class="fab fa-docker text-3xl text-gray-700 group-hover:text-orange-600"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Docker</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                        <i class="fab fa-git-alt text-3xl text-gray-700 group-hover:text-orange-600"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Git</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-6 lg:px-20 bg-gradient-to-r from-orange-600 to-orange-500 relative overflow-hidden">
+        <div class="premium-overlay-gradient"></div>
+        <div class="premium-overlay-pattern"></div>
+        
+        <div class="max-w-4xl mx-auto relative z-10 text-center">
+            <h2 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                Ready to Transform Your Business?
+            </h2>
+            <p class="text-xl text-orange-100 mb-12 leading-relaxed">
+                Let's discuss how our innovative solutions can accelerate your digital transformation journey
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="tel:+15551234567" class="inline-block bg-white text-orange-600 px-10 py-5 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                    <i class="fas fa-phone mr-2"></i>
+                    Schedule Consultation
+                </a>
+                <a href="/brochure.pdf" download class="inline-block bg-transparent text-white px-10 py-5 rounded-2xl font-bold text-lg border-2 border-white hover:bg-white hover:text-orange-600 transition-all duration-300">
+                    <i class="fas fa-download mr-2"></i>
+                    Download Brochure
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact-form" class="py-20 px-6 lg:px-20 bg-white relative overflow-hidden">
+        <div class="premium-overlay-gradient"></div>
+        <div class="premium-overlay-pattern"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-3 bg-gradient-to-r from-orange-100 to-orange-50 text-orange-800 px-6 py-3 rounded-full text-sm font-bold mb-8 shadow-lg border border-orange-200">
+                    <span class="w-3 h-3 bg-orange-600 rounded-full animate-pulse"></span>
+                    Get in Touch
+                    <i class="fas fa-envelope text-orange-600"></i>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
+                    Let's Discuss Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-500">Project</span>
+                </h2>
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-medium">
+                    Ready to transform your business? Our team is here to help you find the perfect solution for your needs.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gradient-to-br from-orange-50 via-white to-blue-50 rounded-3xl p-12 shadow-2xl border border-orange-100">
+                    <form id="contactForm" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- First Name -->
+                            <div>
+                                <label class="block text-gray-900 font-bold text-lg mb-3">First Name *</label>
+                                <input type="text" required class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-200 transition-all bg-white text-gray-900 placeholder-gray-400" placeholder="John">
+                            </div>
+                            
+                            <!-- Last Name -->
+                            <div>
+                                <label class="block text-gray-900 font-bold text-lg mb-3">Last Name *</label>
+                                <input type="text" required class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-200 transition-all bg-white text-gray-900 placeholder-gray-400" placeholder="Doe">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-gray-900 font-bold text-lg mb-3">Email Address *</label>
+                                <input type="email" required class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-200 transition-all bg-white text-gray-900 placeholder-gray-400" placeholder="john@example.com">
+                            </div>
+                            
+                            <!-- Phone -->
+                            <div>
+                                <label class="block text-gray-900 font-bold text-lg mb-3">Phone Number *</label>
+                                <input type="tel" required class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-200 transition-all bg-white text-gray-900 placeholder-gray-400" placeholder="+1 (555) 123-4567">
+                            </div>
+                        </div>
+                        
+                        <!-- Company -->
+                        <div>
+                            <label class="block text-gray-900 font-bold text-lg mb-3">Company Name *</label>
+                            <input type="text" required class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-200 transition-all bg-white text-gray-900 placeholder-gray-400" placeholder="Your Company Inc.">
+                        </div>
+                        
+                        <!-- Solution Type -->
+                        <div>
+                            <label class="block text-gray-900 font-bold text-lg mb-3">Solution Type *</label>
+                            <select required class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-200 transition-all bg-white text-gray-900">
+                                <option value="">Select a solution type</option>
+                                <option value="enterprise">Enterprise Solutions</option>
+                                <option value="mobile">Mobile Solutions</option>
+                                <option value="cloud">Cloud Solutions</option>
+                                <option value="ai">AI Solutions</option>
+                                <option value="healthcare">Healthcare Solutions</option>
+                                <option value="finance">Finance Solutions</option>
+                                <option value="retail">Retail Solutions</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Message -->
+                        <div>
+                            <label class="block text-gray-900 font-bold text-lg mb-3">Project Details *</label>
+                            <textarea required rows="6" class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-200 transition-all bg-white text-gray-900 placeholder-gray-400 resize-none" placeholder="Tell us about your project requirements, timeline, and any specific challenges you're facing..."></textarea>
+                        </div>
+                        
+                        <!-- Budget Range -->
+                        <div>
+                            <label class="block text-gray-900 font-bold text-lg mb-3">Budget Range</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <label class="relative">
+                                    <input type="radio" name="budget" value="10k-25k" class="peer sr-only">
+                                    <div class="px-4 py-3 rounded-xl border-2 border-gray-200 cursor-pointer text-center transition-all peer-checked:border-orange-500 peer-checked:bg-orange-50 peer-checked:text-orange-600 hover:border-orange-300">
+                                        <span class="font-medium">$10K - $25K</span>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="radio" name="budget" value="25k-50k" class="peer sr-only">
+                                    <div class="px-4 py-3 rounded-xl border-2 border-gray-200 cursor-pointer text-center transition-all peer-checked:border-orange-500 peer-checked:bg-orange-50 peer-checked:text-orange-600 hover:border-orange-300">
+                                        <span class="font-medium">$25K - $50K</span>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="radio" name="budget" value="50k-100k" class="peer sr-only">
+                                    <div class="px-4 py-3 rounded-xl border-2 border-gray-200 cursor-pointer text-center transition-all peer-checked:border-orange-500 peer-checked:bg-orange-50 peer-checked:text-orange-600 hover:border-orange-300">
+                                        <span class="font-medium">$50K - $100K</span>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="radio" name="budget" value="100k+" class="peer sr-only">
+                                    <div class="px-4 py-3 rounded-xl border-2 border-gray-200 cursor-pointer text-center transition-all peer-checked:border-orange-500 peer-checked:bg-orange-50 peer-checked:text-orange-600 hover:border-orange-300">
+                                        <span class="font-medium">$100K+</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" class="bg-gradient-to-r from-orange-600 to-orange-500 text-white px-12 py-5 rounded-2xl font-bold text-lg hover:from-orange-700 hover:to-orange-600 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border border-orange-400">
+                                <i class="fas fa-paper-plane mr-2"></i>
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Contact Info Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-orange-100 to-orange-50 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-phone text-orange-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Call Us</h3>
+                        <p class="text-gray-600">+1 (555) 123-4567</p>
+                        <p class="text-gray-500 text-sm">Mon-Fri 9AM-6PM EST</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-envelope text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Email Us</h3>
+                        <p class="text-gray-600">info@noshahidevelopers.com</p>
+                        <p class="text-gray-500 text-sm">24/7 Support Available</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-100 to-green-50 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-map-marker-alt text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Visit Us</h3>
+                        <p class="text-gray-600">Tech Hub, Silicon Valley, CA</p>
+                        <p class="text-gray-500 text-sm">By Appointment Only</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2H6zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        </div>
+        
+        <!-- Top Border Accent -->
+        <div class="h-1 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600"></div>
+        
+        <!-- Main Footer Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-20 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+                
+                <!-- Company Info -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white shadow-lg">N</div>
+                        <div>
+                            <h3 class="font-bold text-xl tracking-tight">Noshahi Developers</h3>
+                            <p class="text-orange-400 text-sm font-semibold">Inc.,</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Transforming businesses through innovative technology solutions. 
+                        We deliver excellence in software development, mobile apps, and digital transformation.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-600 transition-colors">
+                            <i class="fab fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-600 transition-colors">
+                            <i class="fab fa-twitter text-sm"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-600 transition-colors">
+                            <i class="fab fa-linkedin-in text-sm"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-600 transition-colors">
+                            <i class="fab fa-github text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6 text-orange-400">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-400 hover:text-orange-400 transition">Home</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-orange-400 transition">About Us</a></li>
+                        <li><a href="services.html" class="text-gray-400 hover:text-orange-400 transition">Services</a></li>
+                        <li><a href="solutions.html" class="text-gray-400 hover:text-orange-400 transition">Solutions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-400 transition">Portfolio</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Services -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6 text-orange-400">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-orange-400 transition">Web Development</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-400 transition">Mobile Apps</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-400 transition">Cloud Solutions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-400 transition">AI & ML</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-orange-400 transition">Consulting</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6 text-orange-400">Get in Touch</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-orange-400"></i>
+                            <a href="mailto:info@noshahidevelopers.com" class="text-gray-400 hover:text-orange-400 transition">info@noshahidevelopers.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone text-orange-400"></i>
+                            <a href="tel:+15551234567" class="text-gray-400 hover:text-orange-400 transition">+1 (555) 123-4567</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-map-marker-alt text-orange-400"></i>
+                            <span class="text-gray-400">Tech Hub, Silicon Valley, CA</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Bar -->
+        <div class="relative z-10 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-6 lg:px-20 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-gray-400 text-sm">
+                        © 2024 Noshahi Developers Inc. All rights reserved.
+                    </p>
+                    <div class="flex gap-6">
+                        <a href="#" class="text-gray-400 hover:text-orange-400 text-sm transition">Privacy Policy</a>
+                        <a href="#" class="text-gray-400 hover:text-orange-400 text-sm transition">Terms of Service</a>
+                        <a href="#" class="text-gray-400 hover:text-orange-400 text-sm transition">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            cursorOutline.style.left = e.clientX + 'px';
+            cursorOutline.style.top = e.clientY + 'px';
+        });
+        
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+            cursorOutline.style.transform = 'scale(0.8)';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+            cursorOutline.style.transform = 'scale(1)';
+        });
+        
+        // Navigation Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+        
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Hero animations
+        gsap.fromTo("h1", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "back.out(1)", delay: 0.2 });
+        gsap.fromTo("p", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.8 });
+        
+        // Scroll-triggered animations
+        gsap.utils.toArray(".group").forEach((item, i) => {
+            gsap.fromTo(item, { y: 50, opacity: 0 }, { 
+                y: 0, 
+                opacity: 1, 
+                duration: 0.7, 
+                scrollTrigger: { 
+                    trigger: item, 
+                    start: "top 85%", 
+                    toggleActions: "play none none reverse" 
+                }, 
+                delay: i * 0.1 
+            });
+        });
+        
+        // Solution cards animation
+        gsap.utils.toArray(".card-3d").forEach((card, i) => {
+            gsap.fromTo(card, { y: 100, opacity: 0, rotationY: -15 }, { 
+                y: 0, 
+                opacity: 1, 
+                rotationY: 0, 
+                duration: 1, 
+                scrollTrigger: { 
+                    trigger: card, 
+                    start: "top 80%", 
+                    toggleActions: "play none none reverse" 
+                }, 
+                delay: i * 0.1 
+            });
+        });
+        
+        // Contact Form Validation and Submission
+        const contactForm = document.getElementById('contactForm');
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const formData = new FormData(contactForm);
+                const firstName = formData.get('firstName') || contactForm.querySelector('input[type="text"]').value;
+                const lastName = formData.get('lastName') || contactForm.querySelectorAll('input[type="text"]')[1].value;
+                const email = formData.get('email') || contactForm.querySelector('input[type="email"]').value;
+                const phone = formData.get('phone') || contactForm.querySelector('input[type="tel"]').value;
+                const company = formData.get('company') || contactForm.querySelector('input[placeholder*="Company"]').value;
+                const solutionType = formData.get('solutionType') || contactForm.querySelector('select').value;
+                const message = formData.get('message') || contactForm.querySelector('textarea').value;
+                const budget = formData.get('budget');
+                
+                // Basic validation
+                if (!firstName || !lastName || !email || !phone || !company || !solutionType || !message) {
+                    showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+                
+                // Phone validation
+                const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+                if (!phoneRegex.test(phone)) {
+                    showNotification('Please enter a valid phone number', 'error');
+                    return;
+                }
+                
+                // Show success message
+                showNotification('Thank you for your message! We\'ll get back to you within 24 hours.', 'success');
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Animate form reset
+                gsap.fromTo(contactForm, { scale: 0.98, opacity: 0.8 }, { 
+                    scale: 1, 
+                    opacity: 1, 
+                    duration: 0.3, 
+                    ease: "power2.out" 
+                });
+            });
+        }
+        
+        // Notification function
+        function showNotification(message, type = 'success') {
+            // Remove existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification fixed top-24 right-8 z-50 px-8 py-4 rounded-2xl shadow-2xl transform translate-x-full transition-all duration-500 ${
+                type === 'success' 
+                    ? 'bg-gradient-to-r from-green-600 to-green-500 text-white' 
+                    : 'bg-gradient-to-r from-red-600 to-red-500 text-white'
+            }`;
+            
+            notification.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} text-2xl"></i>
+                    <div>
+                        <p class="font-bold text-lg">${type === 'success' ? 'Success!' : 'Error'}</p>
+                        <p class="text-sm opacity-90">${message}</p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+                notification.classList.add('translate-x-0');
+            }, 100);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 5000);
+        }
+        
+        // Form field animations
+        const formInputs = document.querySelectorAll('input, textarea, select');
+        formInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                gsap.to(this.parentElement, { scale: 1.02, duration: 0.2 });
+            });
+            
+            input.addEventListener('blur', function() {
+                gsap.to(this.parentElement, { scale: 1, duration: 0.2 });
+            });
+        });
+    </script>
+</body>
+</html>

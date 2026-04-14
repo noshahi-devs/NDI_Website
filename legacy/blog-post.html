@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="style-pages.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Blog Post - Noshahi Developers Inc</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" crossorigin="anonymous"
+        referrerpolicy="no-referrer">
+    <style>
+        .post-container {
+            max-width: 900px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .post-meta {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .post-meta span {
+            margin: 0 10px;
+        }
+
+        .post-featured-img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .post-body {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .post-body h2 {
+            margin: 40px 0 20px;
+            color: #111;
+        }
+
+        .post-body p {
+            margin-bottom: 25px;
+        }
+
+        .post-body blockquote {
+            border-left: 5px solid #f59e0b;
+            padding-left: 20px;
+            margin: 40px 0;
+            font-style: italic;
+            color: #555;
+            font-size: 20px;
+        }
+
+        .related-posts {
+            background: #f9fafb;
+            padding: 80px 0;
+            margin-top: 60px;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAV -->
+    <div class="nav">
+        <div class="logo">
+            <a href="index.html"><img src="img/ndi-logo.png" alt="Noshahi Developers"></a>
+        </div>
+        <div class="menu-toggle" id="menuToggle">☰</div>
+        <div class="nav-links" id="navLinks">
+            <div id="closeMenu">✖</div>
+            <a href="index.html">Home</a>
+            <a href="project.html">Projects</a>
+            <a href="services.html">Services</a>
+            <a href="blog.html" class="active">Blog</a>
+            <a href="about.html">About</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+
+    <article class="post-container" data-aos="fade-up">
+        <div class="post-header">
+            <div class="post-meta">
+                <span><i class="fa-regular fa-calendar"></i> Oct 24, 2025</span>
+                <span><i class="fa-regular fa-user"></i> By Admin</span>
+                <span><i class="fa-solid fa-tag"></i> Smart Cities</span>
+            </div>
+            <h1>The Future of Smart Cities in 2026</h1>
+            <div style="margin-top: 30px;">
+                <a href="blog.html" class="btn-primary" style="padding: 12px 24px; font-size: 16px;">Back to Blog</a>
+            </div>
+        </div>
+
+        
+
+        <div class="post-body">
+            <p>Smart cities are no longer a concept of the far future. In 2026, the integration of AI-driven urban planning and sustainable architecture is transforming how we live, work, and interact with our environment.</p>
+            
+            <h2>Integration of AI in Urban Planning</h2>
+            <p>Artificial intelligence is playing a pivotal role in optimizing city resources. From traffic management systems that reduce congestion to smart grids that manage energy consumption in real-time, AI ensures that cities are more efficient and responsive to the needs of their citizens.</p>
+
+            <blockquote>
+                "The goal of a smart city is not just technology for technology's sake, but using innovation to improve the quality of life for every resident."
+            </blockquote>
+
+            <h2>Sustainable Architecture and Green Spaces</h2>
+            <p>Sustainability is at the core of new developments. Noshahi Developers Inc. is leading the way by incorporating vertical gardens, solar-integrated glass, and rainwater harvesting systems into every major project. These features not only reduce the carbon footprint but also create healthier living spaces.</p>
+
+            <p>As we move forward, the focus remains on building spaces that are not just modern, but future-ready and resilient.</p>
+        </div>
+    </article>
+
+    <section class="related-posts">
+        <div style="text-align: center;">
+            <span class="tag">Next Reads</span>
+            <h2>Related Articles</h2>
+        </div>
+        <div class="related-grid">
+            <!-- Reuse blog card styles if available in style.css or style-pages.css -->
+            <article class="blog-card" data-aos="fade-up">
+                 <div class="blog-thumb">
+                    <img src="img/explore.jpg" alt="Blog 1">
+                </div>
+                <div class="blog-content">
+                    <h3>Top 10 Construction Trends</h3>
+                    <a href="blog-post.html" class="card-link">Read More</a>
+                </div>
+            </article>
+            <article class="blog-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="blog-thumb">
+                    <img src="img/expert-team.jpg" alt="Blog 2">
+                </div>
+                <div class="blog-content">
+                    <h3>Designing Urban Spaces</h3>
+                    <a href="blog-post.html" class="card-link">Read More</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- FOOTER (Standardized) -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3 class="footer-logo">Noshahi Developers</h3>
+                <p>Building future spaces with modern planning, smart construction & trusted development solutions.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="project.html">Projects</a>
+                <a href="services.html">Services</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>Thokar Niaz Baig, Lahore</p>
+                <p>+92 307 5071297</p>
+                <div class="socials">
+                    <a href="https://facebook.com"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://instagram.com"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://linkedin.com"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 Noshahi Developers Inc.</div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="global.js"></script>
+    <script>AOS.init({ duration: 1200, once: true });</script>
+</body>
+
+</html>
