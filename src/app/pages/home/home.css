@@ -94,7 +94,11 @@
 }
 
 .animate-float {
-    animation: float 4s ease-in-out infinite;
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float 6s ease-in-out 3s infinite;
 }
 
 @media (max-width: 1024px) {
