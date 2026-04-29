@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Noshahi Developers | AI-Powered Software Engineering</title>
+  <!-- Google Fonts + Tailwind + GSAP + Three.js + Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #FFFFFF;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      color: #111827;
+    }
+
+    /* Custom cursor for premium feel (light version) */
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: orange;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s;
+    }
+
+    .cursor-outline {
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(79, 70, 229, 0.4);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.15s ease-out;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      min-width: 280px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      border: 1px solid rgba(250, 165, 6, 0.2);
+      z-index: 1000;
+      margin-top: 10px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #374151;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(250, 165, 6, 0.1);
+    }
+
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(135deg, rgba(250, 165, 6, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+      color: #faa506;
+      transform: translateX(5px);
+    }
+
+    .dropdown-item i {
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Premium Background Overlays */
+    .premium-overlay-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(250, 165, 6, 0.05) 0%, rgba(34, 197, 94, 0.05) 100%);
+      pointer-events: none;
+    }
+
+    .premium-overlay-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(250, 165, 6, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Tech Card Styles */
+    .tech-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(250, 165, 6, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tech-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(250, 165, 6, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .tech-card:hover::before {
+      left: 100%;
+    }
+
+    .tech-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(250, 165, 6, 0.3);
+      border-color: rgba(250, 165, 6, 0.5);
+    }
+
+    /* Category Badge */
+    .category-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .frontend {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+    }
+
+    .backend {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+
+    .database {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+    }
+
+    .cloud {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+    }
+
+    .devops {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+
+    .mobile {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      color: white;
+    }
+
+    /* Canvas Background - only in hero section */
+    canvas#hero-canvas {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      border-radius: 32px;
+    }
+
+    .hero-section {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+    }
+
+    .content-layer {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Premium Glassmorphism for light theme */
+    .glass-premium-light {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(79, 70, 229, 0.15);
+      border-radius: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+    }
+
+    .btn-glow {
+      background: linear-gradient(95deg, rgb(255, 167, 4), red);
+      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    .btn-glow:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(79, 70, 229, 0.35);
+    }
+
+    .btn-outline-premium {
+      border: 1px solid #E5E7EB;
+      background: white;
+      transition: all 0.3s;
+    }
+
+    .btn-outline-premium:hover {
+      border-color: #faa506;
+      background: #F8FAFC;
+      transform: translateY(-4px);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #1E293B 0%, orange 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #111827;
+    }
+
+    /* Scrollbar light */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: orange;
+      border-radius: 10px;
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .float-animation {
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .hover-3d {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .hover-3d:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* service cards light theme */
+    .service-card-light {
+      background: white;
+      border: 1px solid #F0F2F5;
+      border-radius: 28px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .service-card-light:hover {
+      transform: translateY(-8px);
+      border-color: #E0E7FF;
+      box-shadow: 0 25px 35px -15px rgba(79, 70, 229, 0.15);
+    }
+
+    .product-card-light {
+      background: white;
+      border: 1px solid #F0F2F5;
+      border-radius: 32px;
+      transition: all 0.3s ease;
+    }
+
+    .product-card-light:hover {
+      transform: translateY(-8px);
+      border-color: #E0E7FF;
+      box-shadow: 0 25px 35px -15px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Premium Background Overlays */
+    .premium-overlay-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg,
+          rgba(255, 167, 4, 0.1) 0%,
+          rgba(79, 70, 229, 0.05) 25%,
+          rgba(255, 255, 255, 0.02) 50%,
+          rgba(255, 167, 4, 0.05) 75%,
+          rgba(79, 70, 229, 0.1) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .premium-overlay-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(255, 167, 4, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 167, 4, 0.06) 0%, transparent 50%);
+      background-size: 100% 100%, 100% 100%, 100% 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .premium-overlay-mesh {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 167, 4, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 167, 4, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 1;
+      animation: meshFloat 20s linear infinite;
+    }
+
+    @keyframes meshFloat {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(50px, 50px);
+      }
+    }
+
+    .premium-overlay-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center,
+          rgba(255, 167, 4, 0.15) 0%,
+          rgba(255, 167, 4, 0.08) 40%,
+          transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(40px);
+    }
+
+    .premium-overlay-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, rgba(255, 167, 4, 0.3), rgba(255, 140, 0, 0.2));
+      top: -200px;
+      left: -200px;
+      animation: floatOrb 15s ease-in-out infinite;
+    }
+
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(99, 102, 241, 0.15));
+      bottom: -150px;
+      right: -150px;
+      animation: floatOrb 20s ease-in-out infinite reverse;
+    }
+
+    .orb-3 {
+      top: 20%;
+      right: 15%;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(120, 119, 198, 0.3), transparent 70%);
+      width: 250px;
+      height: 250px;
+      background: linear-gradient(135deg, rgba(255, 167, 4, 0.25), rgba(255, 215, 0, 0.15));
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: floatOrb 25s ease-in-out infinite;
+    }
+
+    @keyframes floatOrb {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      33% {
+        transform: translate(30px, -30px) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-20px, 20px) scale(0.9);
+      }
+    }
+
+    .premium-overlay-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.02;
+      z-index: 2;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==');
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+
+  <!-- Premium Navigation -->
+  <nav
+    class="fixed top-0 left-0 w-full z-50 py-5 px-8 lg:px-20 transition-all duration-500 bg-white/80 backdrop-blur-xl border-b border-orange-100 shadow-lg"
+    id="mainNav">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <div
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white shadow-lg">
+          N</div>
+        <span class="font-bold text-xl tracking-tight text-gray-900">Noshahi <span class="text-orange-600">Developers
+            Inc.,</span></span>
+      </div>
+      <div class="hidden md:flex gap-8 text-gray-600 font-medium">
+        <a href="index.html" class="hover:text-orange-600 transition">Home</a>
+        <a href="about.html" class="hover:text-orange-600 transition">About</a>
+        <a href="services.html" class="hover:text-orange-600 transition">Services</a>
+        <a href="solutions.html" class="hover:text-orange-600 transition">Solutions</a>
+        <a href="products.html" class="hover:text-orange-600 transition">Products</a>
+        <a href="portfolio.html" class="hover:text-orange-600 transition">Portfolio</a>
+        <div class="dropdown">
+          <a href="technologies.html" class="text-orange-600 font-semibold flex items-center gap-1">
+            Technologies
+            <i class="fas fa-chevron-down text-xs"></i>
+          </a>
+          <div class="dropdown-content">
+            <a href="tech-angular.html" class="dropdown-item">
+              <i class="fab fa-angular text-red-600"></i>
+              <span>Angular</span>
+              <span class="category-badge frontend ml-auto">Frontend</span>
+            </a>
+            <a href="tech-react.html" class="dropdown-item">
+              <i class="fab fa-react text-blue-600"></i>
+              <span>React</span>
+              <span class="category-badge frontend ml-auto">Frontend</span>
+            </a>
+            <a href="tech-nodejs.html" class="dropdown-item">
+              <i class="fab fa-node-js text-green-600"></i>
+              <span>Node.js</span>
+              <span class="category-badge backend ml-auto">Backend</span>
+            </a>
+            <a href="tech-python.html" class="dropdown-item">
+              <i class="fab fa-python text-blue-500"></i>
+              <span>Python</span>
+              <span class="category-badge backend ml-auto">Backend</span>
+            </a>
+            <a href="tech-dotnet.html" class="dropdown-item">
+              <i class="fab fa-microsoft text-blue-700"></i>
+              <span>.NET</span>
+              <span class="category-badge backend ml-auto">Backend</span>
+            </a>
+            <a href="tech-sql.html" class="dropdown-item">
+              <i class="fas fa-database text-orange-600"></i>
+              <span>SQL</span>
+              <span class="category-badge database ml-auto">Database</span>
+            </a>
+            <a href="tech-aws.html" class="dropdown-item">
+              <i class="fab fa-aws text-orange-500"></i>
+              <span>AWS</span>
+              <span class="category-badge cloud ml-auto">Cloud</span>
+            </a>
+            <a href="tech-azure.html" class="dropdown-item">
+              <i class="fab fa-microsoft text-blue-600"></i>
+              <span>Azure</span>
+              <span class="category-badge cloud ml-auto">Cloud</span>
+            </a>
+            <a href="tech-docker.html" class="dropdown-item">
+              <i class="fab fa-docker text-blue-400"></i>
+              <span>Docker</span>
+              <span class="category-badge devops ml-auto">DevOps</span>
+            </a>
+            <a href="tech-git.html" class="dropdown-item">
+              <i class="fab fa-git-alt text-orange-600"></i>
+              <span>Git</span>
+              <span class="category-badge devops ml-auto">DevOps</span>
+            </a>
+            <a href="tech-directus.html" class="dropdown-item">
+              <i class="fas fa-server text-purple-600"></i>
+              <span>Directus</span>
+              <span class="category-badge backend ml-auto">Backend</span>
+            </a>
+            <a href="tech-vercel.html" class="dropdown-item">
+              <i class="fas fa-rocket text-gray-800"></i>
+              <span>Vercel</span>
+              <span class="category-badge cloud ml-auto">Cloud</span>
+            </a>
+          </div>
+        </div>
+        <a href="contact.html" class="hover:text-orange-600 transition">Contact</a>
+      </div>
+      <button onclick="window.location.href='#contact'"
+        class="hidden md:block bg-gradient-to-r from-orange-600 to-orange-500 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:from-orange-700 hover:to-orange-600 transition shadow-md hover:shadow-lg">
+        Get Started
+      </button>
+      <div class="md:hidden text-2xl cursor-pointer text-gray-700">☰</div>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Canvas on Right Side Only -->
+  <section class="hero-section min-h-screen flex items-center relative pt-32 pb-20 px-6 lg:px-20 overflow-hidden">
+    <!-- Canvas Container - Right Side Only -->
+    <div class="absolute right-0 top-0 w-full lg:w-1/2 h-full z-0">
+      <canvas id="hero-canvas" class="w-full h-full object-contain"></canvas>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto relative z-10 w-full">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-full px-5 py-2 mb-8">
+          <span class="relative flex h-2 w-2"><span
+              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-600 opacity-75"></span><span
+              class="relative inline-flex rounded-full h-2 w-2 bg-orange-600"></span></span>
+          <span class="text-xs uppercase tracking-[0.2em] font-bold text-orange-700">Next-Gen AI Engineering</span>
+        </div>
+
+        <!-- Dynamic Heading with Typewriter Effect -->
+        <div class="relative">
+          <h1 class="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] tracking-tighter text-gray-900">
+            <span class="block">We Build</span>
+            <span id="dynamic-text" class="text-gradient block">Intelligent Solutions</span>
+          </h1>
+          <!-- Typing cursor -->
+          <span id="typing-cursor" class="absolute bottom-0 left-0 w-1 h-8 bg-orange-600 animate-pulse"></span>
+        </div>
+
+        <p class="text-lg md:text-xl text-gray-500 max-w-xl mt-8 font-light leading-relaxed">
+          We architect high-performance SaaS, AI-driven platforms, and enterprise ecosystems that redefine global
+          standards.
+        </p>
+
+        <div class="flex flex-wrap gap-5 mt-12">
+          <button
+            class="btn-glow px-8 py-4 rounded-2xl font-bold text-white text-lg flex items-center gap-3 group shadow-lg">
+            Launch Your Vision <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+          </button>
+          <button class="btn-outline-premium px-8 py-4 rounded-2xl font-bold text-gray-700 flex items-center gap-3">
+            <i class="fas fa-play-circle text-orange-600"></i> Explore Demo
+          </button>
+        </div>
+
+        <!-- Trust indicators -->
+        <div class="flex gap-8 mt-16 pt-8 border-t border-gray-100">
+          <div><span class="text-2xl md:text-3xl font-black text-gray-900">150+</span>
+            <p class="text-xs uppercase tracking-wider text-orange-600 mt-1">Global Clients</p>
+          </div>
+          <div><span class="text-2xl md:text-3xl font-black text-gray-900">500+</span>
+            <p class="text-xs uppercase tracking-wider text-orange-600 mt-1">Projects</p>
+          </div>
+          <div><span class="text-2xl md:text-3xl font-black text-gray-900">99%</span>
+            <p class="text-xs uppercase tracking-wider text-orange-600 mt-1">Success Rate</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Services Section (Light Premium) -->
+  <section class="py-28 px-6 lg:px-20 bg-white relative overflow-hidden">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-pattern"></div>
+    <div class="premium-overlay-noise"></div>
+    <div class="premium-overlay-orb orb-1"></div>
+    <div class="premium-overlay-orb orb-2"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="text-center mb-20">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Core Capabilities</span>
+        <h2 class="section-title text-gray-900 mt-4">Engineered for <span class="text-gradient">Excellence</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-6">Cutting-edge solutions tailored to elevate your digital
+          infrastructure.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="service-card-light p-8 text-center transition-all duration-500 cursor-pointer">
+          <div class="w-20 h-20 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-6"><i
+              class="fas fa-globe text-3xl text-orange-600"></i></div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-3">Enterprise Web</h3>
+          <p class="text-gray-500">Scalable, secure, and lightning-fast architectures for global enterprises.</p>
+        </div>
+        <div class="service-card-light p-8 text-center transition-all duration-500 cursor-pointer">
+          <div class="w-20 h-20 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-6"><i
+              class="fas fa-cubes text-3xl text-orange-600"></i></div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-3">SaaS Platforms</h3>
+          <p class="text-gray-500">Multitenant cloud software built for global performance and scale.</p>
+        </div>
+        <div class="service-card-light p-8 text-center transition-all duration-500 cursor-pointer">
+          <div class="w-20 h-20 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-6"><i
+              class="fas fa-chalkboard-user text-3xl text-orange-600"></i></div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-3">ERP Solutions</h3>
+          <p class="text-gray-500">Streamline operations with custom management & intelligent reporting.</p>
+        </div>
+        <div class="service-card-light p-8 text-center transition-all duration-500 cursor-pointer">
+          <div class="w-20 h-20 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-6"><i
+              class="fas fa-microchip text-3xl text-orange-600"></i></div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-3">AI Applications</h3>
+          <p class="text-gray-500">Next-gen intelligence and automation for modern business ecosystems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Are Section (Premium) -->
+  <section class="py-20 px-6 lg:px-20 bg-gradient-to-br from-white via-orange-50/30 to-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Column - Images -->
+        <div class="space-y-6">
+          <div class="relative">
+            <img src="img/building-future.jpg" alt="Innovation" class="rounded-2xl shadow-2xl w-full object-cover">
+            <div
+              class="absolute -bottom-6 -right-6 bg-gradient-to-br from-orange-600 to-orange-500 rounded-2xl p-6 shadow-xl">
+              <div class="text-white">
+                <div class="text-3xl font-black">15+</div>
+                <div class="text-sm font-medium">Years of Excellence</div>
+              </div>
+            </div>
+          </div>
+          <div class="ml-12">
+            <img src="img/smart-housing.jpg" alt="Technology" class="rounded-2xl shadow-xl w-full object-cover">
+          </div>
+        </div>
+
+        <!-- Right Column - Content -->
+        <div class="space-y-8">
+          <!-- Section Header -->
+          <div>
+            <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Who We Are</span>
+            <h2 class="section-title text-gray-900 mt-4">Turn <span class="text-gradient">SMART Ideas</span> Into <span
+                class="text-gradient">SOPHISTICATED</span> Products</h2>
+          </div>
+
+          <!-- Description -->
+          <p class="text-gray-600 text-lg leading-relaxed">
+            We provide software development and implementation services to automate your business operating processes so
+            that you serve your customers better and faster, while lowering your operational costs. Since 2008 we have
+            been an enterprise solution partner for world's leading companies.
+          </p>
+
+          <!-- What We Provide -->
+          <div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">Noshahi Developers Provides...</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Flexibility -->
+              <div
+                class="flex gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-orange-100 hover:shadow-lg transition-all duration-300">
+                <div
+                  class="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-arrows-alt text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 mb-1">Flexibility</h4>
+                  <p class="text-sm text-gray-600">When you need quick and dependable help for time-critical jobs.</p>
+                </div>
+              </div>
+
+              <!-- Creativity -->
+              <div
+                class="flex gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-blue-100 hover:shadow-lg transition-all duration-300">
+                <div
+                  class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-lightbulb text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 mb-1">Creativity</h4>
+                  <p class="text-sm text-gray-600">When you need fresh insights to solve problems.</p>
+                </div>
+              </div>
+
+              <!-- Confidence -->
+              <div
+                class="flex gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-green-100 hover:shadow-lg transition-all duration-300">
+                <div
+                  class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-shield-alt text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 mb-1">Confidence</h4>
+                  <p class="text-sm text-gray-600">When you need more information to make crucial decisions.</p>
+                </div>
+              </div>
+
+              <!-- Objectivity -->
+              <div
+                class="flex gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-purple-100 hover:shadow-lg transition-all duration-300">
+                <div
+                  class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-balance-scale text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 mb-1">Objectivity</h4>
+                  <p class="text-sm text-gray-600">When you need a credible, third-party evaluation.</p>
+                </div>
+              </div>
+
+              <!-- Balance -->
+              <div
+                class="flex gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-pink-100 hover:shadow-lg transition-all duration-300">
+                <div
+                  class="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-yin-yang text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 mb-1">Balance</h4>
+                  <p class="text-sm text-gray-600">When you need experts who understand technology and business.</p>
+                </div>
+              </div>
+
+              <!-- Expertise -->
+              <div
+                class="flex gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-indigo-100 hover:shadow-lg transition-all duration-300">
+                <div
+                  class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-brain text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 mb-1">Expertise & Domain Knowledge</h4>
+                  <p class="text-sm text-gray-600">When you need techno-business expertise in your domain.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Business Solutions Section (Premium) -->
+  <section class="py-20 px-6 lg:px-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-mesh"></div>
+    <div class="premium-overlay-noise"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <!-- Section Header -->
+      <div class="text-center mb-20">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Business Solutions</span>
+        <h2 class="section-title text-gray-900 mt-4">Adapting to <span class="text-gradient">Your Business</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-6">Adding efficacy and efficiency to your business through software
+          and IT solutions.</p>
+      </div>
+
+      <!-- Icon Boxes Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Development Resources -->
+        <div
+          class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
+          <div
+            class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-code text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Development Resources</h3>
+          <p class="text-gray-600 leading-relaxed">Software developers & IT engineers as part of your team onshore or
+            offshore.</p>
+          <div
+            class="mt-6 flex items-center text-orange-600 font-semibold group-hover:text-orange-700 transition-colors">
+            Learn More <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Flex-Capacity Solution Teams -->
+        <div
+          class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
+          <div
+            class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-users text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Flex-Capacity Solution Teams</h3>
+          <p class="text-gray-600 leading-relaxed">Teams of developers and engineers to deliver your projects.</p>
+          <div
+            class="mt-6 flex items-center text-orange-600 font-semibold group-hover:text-orange-700 transition-colors">
+            Learn More <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Development Center -->
+        <div
+          class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
+          <div
+            class="w-20 h-20 rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-building text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Development Center</h3>
+          <p class="text-gray-600 leading-relaxed">An extension of your IT department, ready to assist.</p>
+          <div
+            class="mt-6 flex items-center text-orange-600 font-semibold group-hover:text-orange-700 transition-colors">
+            Learn More <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="text-center mt-16">
+        <div class="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-full px-6 py-3 mb-6">
+          <i class="fas fa-rocket text-orange-600"></i>
+          <span class="text-sm font-semibold text-orange-700">Ready to Scale Your Business?</span>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <button class="btn-glow px-8 py-4 rounded-2xl font-bold text-white">
+            Get Started <i class="fas fa-arrow-right ml-2"></i>
+          </button>
+          <button class="btn-outline-premium px-8 py-4 rounded-2xl font-bold text-gray-700">
+            View Solutions <i class="fas fa-th-large ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Offer Section -->
+  <section class="py-20 px-6 lg:px-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-mesh"></div>
+    <div class="premium-overlay-noise"></div>
+    <div class="premium-overlay-orb orb-1"></div>
+    <div class="premium-overlay-orb orb-2"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <!-- Section Header -->
+      <div class="text-center mb-16">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">What We Offer</span>
+        <h2 class="section-title text-gray-900 mt-4">We offer services for <span class="text-gradient">every
+            phase</span> of the project​</h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-6">Working with a foundation operating schools in deep poverty
+          areas, we are transforming education delivery through digital technology.</p>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left Column - Services -->
+        <div class="space-y-6">
+          <!-- Advisory and Solution Strategy -->
+          <div
+            class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+            <div class="flex gap-4">
+              <div
+                class="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 79 79" fill="none">
+                  <rect width="79" height="79" rx="12" fill="#55539B"></rect>
+                  <path d="M17.2922 28.5043L28.8297 16.9668" stroke="white" stroke-width="4.125" stroke-miterlimit="10">
+                  </path>
+                  <path d="M17.2922 16.9668L28.8297 28.5043" stroke="white" stroke-width="4.125" stroke-miterlimit="10">
+                  </path>
+                  <path d="M48.7371 59.9751L60.2746 48.4105" stroke="white" stroke-width="4.125" stroke-miterlimit="10">
+                  </path>
+                  <path d="M48.7371 48.4105L60.2746 59.9751" stroke="white" stroke-width="4.125" stroke-miterlimit="10">
+                  </path>
+                  <path
+                    d="M23.7651 51.3355C25.8505 51.3355 27.5297 53.0146 27.5297 55.1C27.5297 57.1855 25.8505 58.8646 23.7651 58.8646C21.6797 58.8646 20.0005 57.1855 20.0005 55.1C20.0005 53.0146 21.6797 51.3355 23.7651 51.3355ZM23.7651 47.2729C19.4588 47.2729 15.938 50.7938 15.938 55.1C15.938 59.4063 19.4588 62.9271 23.7651 62.9271C28.0713 62.9271 31.5922 59.4063 31.5922 55.1C31.5922 50.7938 28.0713 47.2729 23.7651 47.2729Z"
+                    fill="white"></path>
+                  <path d="M29.7229 45.3771C29.7229 45.3771 38.6875 28.6396 52.6896 26.6896" stroke="white"
+                    stroke-width="4.125" stroke-miterlimit="10"></path>
+                  <path
+                    d="M63.7938 23.9814C64.8771 22.7629 64.173 20.8126 62.548 20.5959L56.5896 19.8105L46.3792 18.4564C45.2959 18.3209 44.4563 19.3772 44.8355 20.3793L46.7584 25.5522L47.6792 28.0439L49.548 33.0814C50.3605 35.3022 53.2584 35.8439 54.8292 34.0834L58.1334 30.373L63.7938 23.9814Z"
+                    fill="white"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Advisory and Solution Strategy</h3>
+                <ul class="text-gray-600 space-y-2 text-sm">
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-purple-600 mt-1 flex-shrink-0"></i>
+                    <span>Expert advice aligning business goals with effective tech solutions</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-purple-600 mt-1 flex-shrink-0"></i>
+                    <span>Crafting tailored strategies for optimized operational efficiency</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-purple-600 mt-1 flex-shrink-0"></i>
+                    <span>Identifying challenges and offering strategic solutions for growth</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Software Development -->
+          <div
+            class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+            <div class="flex gap-4">
+              <div
+                class="w-16 h-16 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 79 79" fill="none">
+                  <rect width="79" height="79" rx="12" fill="#EE5222"></rect>
+                  <path
+                    d="M50.3336 56.1833C50.3336 58.1062 48.7898 59.6499 46.8669 59.6499H27.1503C25.2273 59.6499 23.6836 58.1062 23.6836 56.1833V22.5458C23.6836 20.6229 25.2273 19.0791 27.1503 19.0791H46.8669C48.7898 19.0791 50.3336 20.6229 50.3336 22.5458V28.4499H54.3961V22.5458C54.3961 18.402 51.0107 15.0166 46.8669 15.0166H27.1503C23.0065 15.0166 19.6211 18.402 19.6211 22.5458V56.2103C19.6211 60.3541 23.0065 63.7395 27.1503 63.7395H46.8669C51.0107 63.7395 54.3961 60.3541 54.3961 56.2103V48.8166H50.3336V56.1833Z"
+                    fill="white"></path>
+                  <path
+                    d="M41.5309 46.7314L40.2309 46.271C39.5267 46.0273 39.1476 45.2148 39.3913 44.5106L43.7517 32.1877C43.9955 31.4835 44.808 31.1044 45.5122 31.3481L46.8122 31.8085C47.5163 32.0523 47.8955 32.8648 47.6517 33.5689L43.2913 45.8919C43.0205 46.596 42.2351 46.9752 41.5309 46.7314Z"
+                    fill="white"></path>
+                  <path
+                    d="M33.3797 38.7688L37.8484 34.3001C38.2276 33.9209 38.2276 33.298 37.8484 32.8917L36.3318 31.3751C35.9526 30.9959 35.3297 30.9959 34.9234 31.3751L30.4547 35.8438L28.2338 38.0647C27.8547 38.4438 27.8547 39.0667 28.2338 39.473L34.9776 46.2167C35.3568 46.5959 35.9797 46.5959 36.3859 46.2167L37.9026 44.7001C38.2818 44.3209 38.2818 43.698 37.9026 43.2917L33.3797 38.7688Z"
+                    fill="white"></path>
+                  <path
+                    d="M53.936 38.7688L49.4672 34.3001C49.0881 33.9209 49.0881 33.298 49.4672 32.8917L51.011 31.3751C51.3901 30.9959 52.0131 30.9959 52.4193 31.3751L56.8881 35.8438L59.1089 38.0647C59.4881 38.4438 59.4881 39.0667 59.1089 39.473L52.3651 46.2167C51.986 46.5959 51.3631 46.5959 50.9568 46.2167L49.4401 44.7001C49.061 44.3209 49.061 43.698 49.4401 43.2917L53.936 38.7688Z"
+                    fill="white"></path>
+                  <path
+                    d="M37.0897 56.5646C38.5556 56.5646 39.7439 55.3763 39.7439 53.9104C39.7439 52.4445 38.5556 51.2562 37.0897 51.2562C35.6239 51.2562 34.4355 52.4445 34.4355 53.9104C34.4355 55.3763 35.6239 56.5646 37.0897 56.5646Z"
+                    fill="white"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Custom Software Development</h3>
+                <ul class="text-gray-600 space-y-2 text-sm">
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-orange-600 mt-1 flex-shrink-0"></i>
+                    <span>Developing tailored solutions for unique business needs</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-orange-600 mt-1 flex-shrink-0"></i>
+                    <span>Implementing cutting-edge coding for seamless applications</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-orange-600 mt-1 flex-shrink-0"></i>
+                    <span>Ensuring intuitive interfaces for an enhanced user experience</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- QA/Testing/Data Migrations -->
+          <div
+            class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+            <div class="flex gap-4">
+              <div
+                class="w-16 h-16 rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 79 79" fill="none">
+                  <rect width="79" height="79" rx="12" fill="#FBB513"></rect>
+                  <path d="M37.0893 25.85H24.8477V29.9125H37.0893V25.85Z" fill="white"></path>
+                  <path d="M33.3247 35.0312H24.8477V39.0937H33.3247V35.0312Z" fill="white"></path>
+                  <path d="M31.8893 43.8604H24.8477V47.9229H31.8893V43.8604Z" fill="white"></path>
+                  <path
+                    d="M62.3048 41.5854V37.5229H59.1631C58.9194 36.277 58.4048 35.1124 57.7277 34.0833L59.9756 31.8354L57.1048 28.9916L54.884 31.2124C53.8548 30.5354 52.7173 30.0479 51.4715 29.777V26.6083H47.409V29.777C46.1631 30.0208 45.0257 30.5354 43.9965 31.1854L41.7215 28.9374L38.8507 31.8083L41.1257 34.0833C40.4486 35.1124 39.9611 36.2499 39.7173 37.4687H36.5215V41.5312H39.6902C39.934 42.777 40.4486 43.9145 41.0986 44.9166L38.8236 47.1916L41.6944 50.0624L43.9423 47.8145C44.9715 48.4916 46.109 48.9791 47.3548 49.2499V52.4187H51.4173V49.277C52.6631 49.0333 53.8006 48.5187 54.8298 47.8687L57.0777 50.1166L59.9486 47.2458L57.7277 45.0249C58.4048 43.9958 58.8923 42.8312 59.1631 41.6124H62.3048V41.5854ZM49.4402 45.4041C46.1902 45.4041 43.5632 42.7499 43.5632 39.527C43.5632 36.277 46.2173 33.6499 49.4402 33.6499C52.6631 33.6499 55.3173 36.3041 55.3173 39.527C55.3173 42.777 52.6631 45.4041 49.4402 45.4041Z"
+                    fill="white"></path>
+                  <path
+                    d="M47.4085 56.3188C47.4085 58.2417 45.8648 59.7854 43.9419 59.7854H24.2252C22.3023 59.7854 20.7585 58.2417 20.7585 56.3188V22.6813C20.7585 20.7583 22.3023 19.2146 24.2252 19.2146H43.9419C45.8648 19.2146 47.4085 20.7583 47.4085 22.6813V23.0875H51.471V22.6813C51.471 18.5375 48.0856 15.1521 43.9419 15.1521H24.2252C20.0815 15.1521 16.696 18.5375 16.696 22.6813V56.3458C16.696 60.4896 20.0815 63.875 24.2252 63.875H43.9419C48.0856 63.875 51.471 60.4896 51.471 56.3458V55.9396H47.4085V56.3188Z"
+                    fill="white"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">QA/Testing/Data Migrations</h3>
+                <ul class="text-gray-600 space-y-2 text-sm">
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-yellow-600 mt-1 flex-shrink-0"></i>
+                    <span>Conducting rigorous testing for robust, error-free solutions</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-yellow-600 mt-1 flex-shrink-0"></i>
+                    <span>Safely and efficiently transferring data for smooth transitions</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-yellow-600 mt-1 flex-shrink-0"></i>
+                    <span>Implementing stringent quality control measures throughout processes</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Global IT Implementation Projects -->
+          <div
+            class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+            <div class="flex gap-4">
+              <div
+                class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 79 79" fill="none">
+                  <rect width="79" height="79" rx="12" fill="#55539B"></rect>
+                  <path
+                    d="M52.3465 37.3966H50.2881C49.9722 37.3966 49.7013 37.1799 49.6291 36.873C49.3854 35.9431 49.0152 35.0674 48.5367 34.2639C48.3742 33.9931 48.4104 33.65 48.636 33.4244L50.1166 31.9438C50.3874 31.673 50.3874 31.2396 50.1166 30.9688L48.0763 28.9285C47.8055 28.6577 47.3722 28.6577 47.1013 28.9285L45.6298 30.4C45.4041 30.6257 45.061 30.6619 44.7902 30.4994C43.9867 30.0299 43.111 29.6507 42.1902 29.407C41.8833 29.3257 41.6666 29.0639 41.6666 28.748V26.6535C41.6666 26.2744 41.3597 25.9674 40.9805 25.9674H38.0916C37.7124 25.9674 37.4055 26.2744 37.4055 26.6535V28.748C37.4055 29.0639 37.1888 29.3257 36.8819 29.407C35.961 29.6507 35.0944 30.0209 34.2909 30.4903C34.0201 30.6528 33.677 30.6167 33.4513 30.391L31.9527 28.8924C31.6819 28.6216 31.2485 28.6216 30.9777 28.8924L28.9374 30.9327C28.6666 31.2035 28.6666 31.6369 28.9374 31.9077L30.436 33.4063C30.6617 33.632 30.6979 33.975 30.5354 34.2459C30.0659 35.0403 29.6958 35.907 29.452 36.8278C29.3708 37.1348 29.109 37.3514 28.793 37.3514H26.6715C26.2923 37.3514 25.9854 37.6584 25.9854 38.0375V40.9264C25.9854 41.3056 26.2923 41.6125 26.6715 41.6125H28.784C29.0999 41.6125 29.3708 41.8292 29.443 42.1362C29.6867 43.057 30.0479 43.9146 30.5173 44.7181C30.6798 44.9889 30.6437 45.332 30.418 45.5577L28.9104 47.0653C28.6395 47.3362 28.6395 47.7695 28.9104 48.0403L30.9506 50.0806C31.2215 50.3514 31.6548 50.3514 31.9256 50.0806L33.4152 48.591C33.6409 48.3653 33.984 48.3292 34.2548 48.4917C35.0583 48.9612 35.9249 49.3313 36.8367 49.575C37.1437 49.6563 37.3604 49.9181 37.3604 50.2341V52.3466C37.3604 52.7257 37.6673 53.0327 38.0465 53.0327H40.9263C41.3055 53.0327 41.6124 52.7257 41.6124 52.3466V50.2702C41.6124 49.9542 41.8291 49.6834 42.136 49.6112C43.0569 49.3674 43.9326 48.9973 44.736 48.5278C45.0069 48.3653 45.3499 48.4014 45.5756 48.6271L47.0562 50.1077C47.327 50.3785 47.7604 50.3785 48.0312 50.1077L50.0715 48.0674C50.3423 47.7966 50.3423 47.3632 50.0715 47.0924L48.609 45.6299C48.3833 45.4042 48.3472 45.0612 48.5097 44.7903C48.9881 43.9869 49.3583 43.1112 49.602 42.1813C49.6833 41.8744 49.9451 41.6577 50.261 41.6577H52.3374C52.7166 41.6577 53.0235 41.3507 53.0235 40.9716V38.0827C53.0416 37.7035 52.7347 37.3966 52.3465 37.3966ZM39.4999 45.6841C36.0874 45.6841 33.3159 42.9125 33.3159 39.5C33.3159 36.0875 36.0874 33.316 39.4999 33.316C42.9124 33.316 45.684 36.0875 45.684 39.5C45.684 42.9125 42.9124 45.6841 39.4999 45.6841Z"
+                    fill="white"></path>
+                  <path
+                    d="M15.0708 39.9605L19.3229 35.7084C19.5305 35.5007 19.3861 35.1396 19.0882 35.1396H17.9777H16.8944C18.8354 24.3966 28.2514 16.2174 39.5451 16.2174C42.2715 16.2174 44.8895 16.7049 47.318 17.5806L49.3763 14.0146C46.325 12.823 43.0208 12.1549 39.5451 12.1549C25.9854 12.1549 14.7458 22.1216 12.7687 35.1396H12.7326H11.902H10.584C10.2861 35.1396 10.1326 35.5007 10.3493 35.7084L14.6014 39.9605C14.7277 40.0959 14.9354 40.0959 15.0708 39.9605Z"
+                    fill="white"></path>
+                  <path
+                    d="M52.3736 60.0382L46.5688 58.4764C46.2799 58.3951 46.0452 58.7111 46.1896 58.9639L46.7403 59.9208L47.291 60.8687L49.3674 64.4708L49.7827 65.184L50.4417 66.3306C50.5952 66.5924 50.9833 66.5382 51.0556 66.2493L52.6174 60.4444C52.6625 60.2639 52.5542 60.0833 52.3736 60.0382Z"
+                    fill="white"></path>
+                  <path
+                    d="M56.4722 18.1313L56.4993 18.0772L56.9146 17.364L57.5736 16.2174C57.7271 15.9556 57.4833 15.6487 57.1944 15.7209L51.3896 17.2737C51.209 17.3188 51.1007 17.5084 51.1549 17.689L52.7076 23.4938C52.7799 23.7827 53.1681 23.8369 53.3215 23.5751L53.8722 22.6181L54.4049 21.6973C59.3882 25.9223 62.5569 32.2147 62.5569 39.2383C62.5569 46.2709 59.3792 52.5633 54.3958 56.7883L56.4542 60.3633C62.6382 55.398 66.6104 47.7966 66.6104 39.2473C66.6285 30.698 62.6562 23.0876 56.4722 18.1313Z"
+                    fill="white"></path>
+                  <path
+                    d="M39.5452 62.259C28.2514 62.259 18.8355 54.0798 16.8945 43.3368H12.7688C14.7459 56.3458 25.9764 66.3215 39.5452 66.3215C43.0119 66.3215 46.325 65.6535 49.3674 64.4618L47.3091 60.8958C44.8806 61.7805 42.2716 62.259 39.5452 62.259Z"
+                    fill="white"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Global IT Implementation Projects</h3>
+                <ul class="text-gray-600 space-y-2 text-sm">
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-blue-600 mt-1 flex-shrink-0"></i>
+                    <span>Executing IT projects on a global scale with extensive experience</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-blue-600 mt-1 flex-shrink-0"></i>
+                    <span>Efficiently overseeing and coordinating complex project management</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-blue-600 mt-1 flex-shrink-0"></i>
+                    <span>Developing scalable IT solutions to meet global demand</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Image -->
+        <div class="flex justify-center lg:justify-end">
+          <div class="relative">
+            <img src="img/expert-team.jpg" alt="Professional team working"
+              class="rounded-3xl shadow-2xl w-full max-w-md object-cover">
+            <!-- Decorative elements -->
+            <div
+              class="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl opacity-20 blur-2xl">
+            </div>
+            <div
+              class="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl opacity-20 blur-2xl">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Flagship Products Showcase (Light) -->
+  <section class="py-20 px-6 lg:px-20 bg-gradient-to-b from-white via-gray-50 to-gray-100 relative overflow-hidden">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-mesh"></div>
+    <div class="premium-overlay-glow"></div>
+    <div class="premium-overlay-noise"></div>
+    <div class="premium-overlay-orb orb-3"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="text-center mb-16">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Flagship Solutions</span>
+        <h2 class="section-title text-gray-900 mt-4">Revolutionary <span class="text-gradient">Products</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-6">Powering the future of education, enterprise, and intelligent
+          automation with cutting-edge solutions.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- VirtuLearn -->
+        <div class="product-card-light group overflow-hidden transition-all duration-500 hover:shadow-2xl">
+          <div class="relative h-40 overflow-hidden">
+            <img src="img/web-development-process.jpg" alt="VirtuLearn"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute top-3 left-3 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold">LMS
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-black text-gray-900 mb-2">VirtuLearn</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">Premium virtual learning management system</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs px-2 py-1 rounded-full bg-orange-50 text-orange-600">Quizzes</span>
+              <span class="text-xs px-2 py-1 rounded-full bg-orange-50 text-orange-600">Video</span>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold text-sm hover:shadow-lg transition-all duration-300">
+              Explore →
+            </button>
+          </div>
+        </div>
+
+        <!-- Institute Manager -->
+        <div class="product-card-light group overflow-hidden transition-all duration-500 hover:shadow-2xl">
+          <div class="relative h-40 overflow-hidden">
+            <img src="img/web-development-002.jpg" alt="Institute Manager"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute top-3 left-3 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold">ERP</div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-black text-gray-900 mb-2">Institute Manager</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">Complete school management solution</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-600">Finance</span>
+              <span class="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-600">Reports</span>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg border border-gray-200 text-gray-700 font-semibold text-sm hover:border-blue-600 hover:bg-blue-50 transition-all duration-300">
+              Discover →
+            </button>
+          </div>
+        </div>
+
+        <!-- Test Builder -->
+        <div class="product-card-light group overflow-hidden transition-all duration-500 hover:shadow-2xl">
+          <div class="relative h-40 overflow-hidden">
+            <img src="img/building-trust.jpg" alt="Test Builder"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute top-3 left-3 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold">TEST
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-black text-gray-900 mb-2">Test Builder</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">Advanced assessment creation platform</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs px-2 py-1 rounded-full bg-green-50 text-green-600">Analytics</span>
+              <span class="text-xs px-2 py-1 rounded-full bg-green-50 text-green-600">AI</span>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg border border-gray-200 text-gray-700 font-semibold text-sm hover:border-green-600 hover:bg-green-50 transition-all duration-300">
+              Learn More →
+            </button>
+          </div>
+        </div>
+
+        <!-- Vision College Gojra -->
+        <div class="product-card-light group overflow-hidden transition-all duration-500 hover:shadow-2xl">
+          <div class="relative h-40 overflow-hidden">
+            <img src="img/premium-quality.jpg" alt="Vision College"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute top-3 left-3 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold">EDU
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-black text-gray-900 mb-2">Vision College</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">Digital platform for Gojra campus</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs px-2 py-1 rounded-full bg-purple-50 text-purple-600">Portal</span>
+              <span class="text-xs px-2 py-1 rounded-full bg-purple-50 text-purple-600">Cloud</span>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg border border-gray-200 text-gray-700 font-semibold text-sm hover:border-purple-600 hover:bg-purple-50 transition-all duration-300">
+              Visit →
+            </button>
+          </div>
+        </div>
+
+        <!-- Ecommerce Home -->
+        <div class="product-card-light group overflow-hidden transition-all duration-500 hover:shadow-2xl">
+          <div class="relative h-40 overflow-hidden">
+            <img src="img/luxury-villas.jpg" alt="Ecommerce"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute top-3 left-3 bg-pink-600 text-white px-3 py-1 rounded-full text-xs font-bold">SHOP
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-black text-gray-900 mb-2">Ecommerce Home</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">Modern online shopping experience</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs px-2 py-1 rounded-full bg-pink-50 text-pink-600">Cart</span>
+              <span class="text-xs px-2 py-1 rounded-full bg-pink-50 text-pink-600">Payment</span>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg border border-gray-200 text-gray-700 font-semibold text-sm hover:border-pink-600 hover:bg-pink-50 transition-all duration-300">
+              Shop Now →
+            </button>
+          </div>
+        </div>
+
+        <!-- Filla Prime -->
+        <div class="product-card-light group overflow-hidden transition-all duration-500 hover:shadow-2xl">
+          <div class="relative h-40 overflow-hidden">
+            <img src="img/on-time-delivery.jpg" alt="Filla Prime"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute top-3 left-3 bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold">SERVICE
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-black text-gray-900 mb-2">Filla Prime</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">Premium service management platform</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs px-2 py-1 rounded-full bg-indigo-50 text-indigo-600">Booking</span>
+              <span class="text-xs px-2 py-1 rounded-full bg-indigo-50 text-indigo-600">Support</span>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg border border-gray-200 text-gray-700 font-semibold text-sm hover:border-indigo-600 hover:bg-indigo-50 transition-all duration-300">
+              Get Started →
+            </button>
+          </div>
+        </div>
+
+        <!-- Ship UK -->
+        <div class="product-card-light group overflow-hidden transition-all duration-500 hover:shadow-2xl">
+          <div class="relative h-40 overflow-hidden">
+            <img src="img/commercial-tower.jpg" alt="Ship UK"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute top-3 left-3 bg-teal-600 text-white px-3 py-1 rounded-full text-xs font-bold">LOGISTICS
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-black text-gray-900 mb-2">Ship UK</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">UK shipping & logistics solution</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs px-2 py-1 rounded-full bg-teal-50 text-teal-600">Tracking</span>
+              <span class="text-xs px-2 py-1 rounded-full bg-teal-50 text-teal-600">Delivery</span>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg border border-gray-200 text-gray-700 font-semibold text-sm hover:border-teal-600 hover:bg-teal-50 transition-all duration-300">
+              Ship Now →
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Analytics Suite -->
+        <div class="product-card-light group overflow-hidden transition-all duration-500 hover:shadow-2xl">
+          <div class="relative h-40 overflow-hidden">
+            <img src="img/explore.jpg" alt="AI Analytics"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">AI</div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-black text-gray-900 mb-2">AI Analytics</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">Intelligent data insights platform</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs px-2 py-1 rounded-full bg-red-50 text-red-600">ML</span>
+              <span class="text-xs px-2 py-1 rounded-full bg-red-50 text-red-600">Reports</span>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg border border-gray-200 text-gray-700 font-semibold text-sm hover:border-red-600 hover:bg-red-50 transition-all duration-300">
+              Learn More →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Team Section -->
+  <section class="py-20 px-6 lg:px-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-mesh"></div>
+    <div class="premium-overlay-noise"></div>
+    <div class="premium-overlay-orb orb-1"></div>
+    <div class="premium-overlay-orb orb-2"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <!-- Section Header -->
+      <div class="text-center mb-20">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Leadership Team</span>
+        <h2 class="section-title text-gray-900 mt-4">Meet Our <span class="text-gradient">Visionary Leaders</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-6">The brilliant minds behind our innovation, driving excellence
+          and shaping the future of technology.</p>
+      </div>
+
+      <!-- Team Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- CEO Muhammad Adeel Noshahi -->
+        <div class="group text-center">
+          <div class="relative mb-6 mx-auto w-32 h-32">
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300">
+            </div>
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-orange-600 to-orange-500 rounded-full opacity-0 group-hover:opacity-10 scale-110 transition-all duration-500">
+            </div>
+            <div
+              class="relative w-full h-full rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white text-3xl font-black shadow-xl group-hover:scale-105 transition-transform duration-300">
+              MAN
+            </div>
+            <!-- Decorative Ring -->
+            <div
+              class="absolute -inset-2 border-2 border-orange-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+          </div>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Muhammad Adeel Noshahi</h3>
+          <div
+            class="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold mb-4">
+            <i class="fas fa-crown text-xs"></i> Chief Executive Officer
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">Visionary leader with 15+ years of experience in enterprise
+            solutions and digital transformation.</p>
+          <div class="flex justify-center gap-3 mt-4">
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-orange-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fab fa-linkedin-in text-gray-600 hover:text-orange-600 text-sm"></i>
+            </a>
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-orange-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fas fa-envelope text-gray-600 hover:text-orange-600 text-sm"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- GM Nabeel Noshahi -->
+        <div class="group text-center">
+          <div class="relative mb-6 mx-auto w-32 h-32">
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300">
+            </div>
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-500 rounded-full opacity-0 group-hover:opacity-10 scale-110 transition-all duration-500">
+            </div>
+            <div
+              class="relative w-full h-full rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-3xl font-black shadow-xl group-hover:scale-105 transition-transform duration-300">
+              NN
+            </div>
+            <!-- Decorative Ring -->
+            <div
+              class="absolute -inset-2 border-2 border-blue-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+          </div>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Nabeel Noshahi</h3>
+          <div
+            class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-bold mb-4">
+            <i class="fas fa-tasks text-xs"></i> General Manager
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">Strategic operations expert driving business growth and
+            operational excellence across all departments.</p>
+          <div class="flex justify-center gap-3 mt-4">
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-blue-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fab fa-linkedin-in text-gray-600 hover:text-blue-600 text-sm"></i>
+            </a>
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-blue-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fas fa-envelope text-gray-600 hover:text-blue-600 text-sm"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- CTO Sharjeel Noshahi -->
+        <div class="group text-center">
+          <div class="relative mb-6 mx-auto w-32 h-32">
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300">
+            </div>
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-purple-600 to-purple-500 rounded-full opacity-0 group-hover:opacity-10 scale-110 transition-all duration-500">
+            </div>
+            <div
+              class="relative w-full h-full rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white text-3xl font-black shadow-xl group-hover:scale-105 transition-transform duration-300">
+              SN
+            </div>
+            <!-- Decorative Ring -->
+            <div
+              class="absolute -inset-2 border-2 border-purple-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+          </div>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Sharjeel Noshahi</h3>
+          <div
+            class="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-bold mb-4">
+            <i class="fas fa-microchip text-xs"></i> Chief Technology Officer
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">Tech innovator specializing in AI, cloud architecture, and
+            cutting-edge software development.</p>
+          <div class="flex justify-center gap-3 mt-4">
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-purple-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fab fa-linkedin-in text-gray-600 hover:text-purple-600 text-sm"></i>
+            </a>
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-purple-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fas fa-envelope text-gray-600 hover:text-purple-600 text-sm"></i>
+            </a>
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-purple-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fab fa-github text-gray-600 hover:text-purple-600 text-sm"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Additional Team Member - Lead Developer -->
+        <div class="group text-center">
+          <div class="relative mb-6 mx-auto w-32 h-32">
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-green-500 to-green-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300">
+            </div>
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-green-600 to-green-500 rounded-full opacity-0 group-hover:opacity-10 scale-110 transition-all duration-500">
+            </div>
+            <div
+              class="relative w-full h-full rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white text-3xl font-black shadow-xl group-hover:scale-105 transition-transform duration-300">
+              TL
+            </div>
+            <!-- Decorative Ring -->
+            <div
+              class="absolute -inset-2 border-2 border-green-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+          </div>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Tech Lead</h3>
+          <div
+            class="inline-flex items-center gap-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold mb-4">
+            <i class="fas fa-code text-xs"></i> Lead Developer
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">Full-stack architect delivering robust scalable solutions
+            with modern tech stacks.</p>
+          <div class="flex justify-center gap-3 mt-4">
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-green-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fab fa-linkedin-in text-gray-600 hover:text-green-600 text-sm"></i>
+            </a>
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-green-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fas fa-envelope text-gray-600 hover:text-green-600 text-sm"></i>
+            </a>
+            <a href="#"
+              class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-green-100 flex items-center justify-center transition-colors duration-300">
+              <i class="fab fa-github text-gray-600 hover:text-green-600 text-sm"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Stats -->
+      <div class="mt-20 bg-gradient-to-r from-orange-50 to-blue-50 rounded-3xl p-8 border border-orange-100">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-3xl font-black text-gray-900 mb-2">50+</div>
+            <div class="text-sm font-semibold text-orange-600">Team Members</div>
+          </div>
+          <div>
+            <div class="text-3xl font-black text-gray-900 mb-2">15+</div>
+            <div class="text-sm font-semibold text-blue-600">Years Experience</div>
+          </div>
+          <div>
+            <div class="text-3xl font-black text-gray-900 mb-2">500+</div>
+            <div class="text-sm font-semibold text-purple-600">Projects Delivered</div>
+          </div>
+          <div>
+            <div class="text-3xl font-black text-gray-900 mb-2">99%</div>
+            <div class="text-sm font-semibold text-green-600">Client Satisfaction</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Partners Section -->
+  <section class="py-20 px-6 bg-white relative overflow-hidden">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-mesh"></div>
+    <div class="premium-overlay-noise"></div>
+    <div class="premium-overlay-orb orb-1"></div>
+    <div class="premium-overlay-orb orb-2"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <!-- Section Header -->
+      <div class="text-center mb-16">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Trusted By</span>
+        <h2 class="section-title text-gray-900 mt-4">Our <span class="text-gradient">Valued Partners</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-6">Proud to collaborate with industry leaders and innovative
+          companies worldwide.</p>
+      </div>
+
+      <!-- Partners Marquee -->
+      <div class="relative overflow-hidden py-8">
+        <!-- Single Row Marquee -->
+        <div class="flex animate-marquee">
+          <img src="img/partner-1.png" alt="Partner 1"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-2.png" alt="Partner 2"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-3.png" alt="Partner 3"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-4.png" alt="Partner 4"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-5.png" alt="Partner 5"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-1-soft.png" alt="Partner 6"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <!-- Duplicate for seamless loop -->
+          <img src="img/partner-1.png" alt="Partner 1"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-2.png" alt="Partner 2"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-3.png" alt="Partner 3"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-4.png" alt="Partner 4"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-5.png" alt="Partner 5"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+          <img src="img/partner-1-soft.png" alt="Partner 6"
+            class="h-16 md:h-20 mx-8 opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 flex-shrink-0">
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="text-center mt-20">
+        <div class="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-full px-6 py-3 mb-8">
+          <i class="fas fa-handshake text-orange-600"></i>
+          <span class="text-sm font-semibold text-orange-700">Join Our Partner Network</span>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <button class="btn-glow px-8 py-4 rounded-2xl font-bold text-white">
+            Become a Partner <i class="fas fa-arrow-right ml-2"></i>
+          </button>
+          <button class="btn-outline-premium px-8 py-4 rounded-2xl font-bold text-gray-700">
+            View Success Stories <i class="fas fa-book-open ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Contact Section -->
+  <section class="py-20 px-6 lg:px-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <!-- Premium Background Overlays -->
+    <div class="premium-overlay-gradient"></div>
+    <div class="premium-overlay-mesh"></div>
+    <div class="premium-overlay-noise"></div>
+    <div class="premium-overlay-orb orb-1"></div>
+    <div class="premium-overlay-orb orb-2"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <!-- Section Header -->
+      <div class="text-center mb-16">
+        <span class="text-orange-600 text-sm font-bold uppercase tracking-[0.3em]">Get In Touch</span>
+        <h2 class="section-title text-gray-900 mt-4">Let's Build Something <span class="text-gradient">Amazing
+            Together</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-6">Ready to transform your ideas into reality? Contact us today and
+          let's discuss how we can help your business grow.</p>
+      </div>
+
+      <!-- Contact Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <!-- Contact Form -->
+        <div class="bg-white rounded-3xl shadow-xl p-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+                <input type="text"
+                  class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-orange-500 focus:outline-none transition-colors"
+                  placeholder="John">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                <input type="text"
+                  class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-orange-500 focus:outline-none transition-colors"
+                  placeholder="Doe">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+              <input type="email"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-orange-500 focus:outline-none transition-colors"
+                placeholder="john@example.com">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
+              <input type="text"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-orange-500 focus:outline-none transition-colors"
+                placeholder="Project Inquiry">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+              <textarea rows="5"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-orange-500 focus:outline-none transition-colors resize-none"
+                placeholder="Tell us about your project..."></textarea>
+            </div>
+            <button type="submit" class="w-full btn-glow px-8 py-4 rounded-2xl font-bold text-white">
+              Send Message <i class="fas fa-paper-plane ml-2"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="space-y-8">
+          <!-- Contact Cards -->
+          <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-envelope text-orange-600 text-lg"></i>
+              </div>
+              <div>
+                <h4 class="text-lg font-bold text-gray-900 mb-2">Email Us</h4>
+                <p class="text-gray-600 mb-3">Get in touch with our team for any inquiries</p>
+                <a href="mailto:hello@noshahi.dev"
+                  class="text-orange-600 font-semibold hover:text-orange-700 transition-colors">hello@noshahi.dev</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-phone text-blue-600 text-lg"></i>
+              </div>
+              <div>
+                <h4 class="text-lg font-bold text-gray-900 mb-2">Call Us</h4>
+                <p class="text-gray-600 mb-3">Monday to Friday, 9:00 AM to 6:00 PM</p>
+                <a href="tel:+1234567890" class="text-blue-600 font-semibold hover:text-blue-700 transition-colors">+1
+                  (234) 567-890</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-map-marker-alt text-purple-600 text-lg"></i>
+              </div>
+              <div>
+                <h4 class="text-lg font-bold text-gray-900 mb-2">Visit Us</h4>
+                <p class="text-gray-600 mb-3">Stop by our office for a consultation</p>
+                <address class="text-purple-600 font-semibold not-italic">
+                  Global Headquarters<br>
+                  Silicon Valley, CA 94025
+                </address>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Media -->
+          <div class="bg-gradient-to-r from-orange-50 to-blue-50 rounded-2xl p-6 border border-orange-100">
+            <h4 class="text-lg font-bold text-gray-900 mb-4">Connect With Us</h4>
+            <div class="flex gap-4">
+              <a href="#"
+                class="w-12 h-12 rounded-xl bg-white hover:bg-orange-100 flex items-center justify-center transition-colors duration-300 shadow-md hover:shadow-lg">
+                <i class="fab fa-twitter text-gray-600 hover:text-orange-600"></i>
+              </a>
+              <a href="#"
+                class="w-12 h-12 rounded-xl bg-white hover:bg-blue-100 flex items-center justify-center transition-colors duration-300 shadow-md hover:shadow-lg">
+                <i class="fab fa-linkedin-in text-gray-600 hover:text-blue-600"></i>
+              </a>
+              <a href="#"
+                class="w-12 h-12 rounded-xl bg-white hover:bg-purple-100 flex items-center justify-center transition-colors duration-300 shadow-md hover:shadow-lg">
+                <i class="fab fa-github text-gray-600 hover:text-purple-600"></i>
+              </a>
+              <a href="#"
+                class="w-12 h-12 rounded-xl bg-white hover:bg-green-100 flex items-center justify-center transition-colors duration-300 shadow-md hover:shadow-lg">
+                <i class="fab fa-dribbble text-gray-600 hover:text-green-600"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Footer -->
+  <footer class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=" 60" height="60"
+        viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" %3E%3Cg fill="none" fill-rule="evenodd" %3E%3Cg
+        fill="%23ffffff" fill-opacity="1" %3E%3Cpath
+        d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2H6zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"
+        /%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+
+    <!-- Top Border Accent -->
+    <div class="h-1 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600"></div>
+
+    <!-- Main Footer Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-20 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+
+        <!-- Company Info -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-3 mb-6">
+            <div
+              class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white shadow-lg">
+              N</div>
+            <div>
+              <h3 class="font-bold text-xl tracking-tight">Noshahi Developers</h3>
+              <p class="text-orange-400 text-sm font-semibold">Inc.,</p>
+            </div>
+          </div>
+          <p class="text-gray-300 leading-relaxed mb-6 max-w-sm">
+            Engineering the intelligent future with cutting-edge AI solutions, enterprise platforms, and transformative
+            digital experiences.
+          </p>
+          <div class="flex gap-4">
+            <a href="#"
+              class="w-10 h-10 rounded-lg bg-gray-800 hover:bg-orange-600 flex items-center justify-center transition-all duration-300 hover:scale-110">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-lg bg-gray-800 hover:bg-orange-600 flex items-center justify-center transition-all duration-300 hover:scale-110">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-lg bg-gray-800 hover:bg-orange-600 flex items-center justify-center transition-all duration-300 hover:scale-110">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-lg bg-gray-800 hover:bg-orange-600 flex items-center justify-center transition-all duration-300 hover:scale-110">
+              <i class="fab fa-dribbble"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div>
+          <h4 class="font-bold text-lg mb-6 text-orange-400">Services</h4>
+          <ul class="space-y-3">
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>Enterprise Web</a></li>
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>SaaS Platforms</a></li>
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>ERP Solutions</a></li>
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>AI Applications</a></li>
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>Cloud Architecture</a></li>
+          </ul>
+        </div>
+
+        <!-- Products -->
+        <div>
+          <h4 class="font-bold text-lg mb-6 text-orange-400">Products</h4>
+          <ul class="space-y-3">
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>VirtuLearn</a></li>
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>Institute Manager</a></li>
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>AI Analytics Suite</a></li>
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>Cloud Dashboard</a></li>
+            <li><a href="#"
+                class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2"><i
+                  class="fas fa-chevron-right text-xs opacity-60"></i>API Gateway</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 class="font-bold text-lg mb-6 text-orange-400">Get in Touch</h4>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-map-marker-alt text-orange-400 mt-1"></i>
+              <span class="text-gray-300 text-sm">Global Headquarters<br>Silicon Valley, CA</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fas fa-envelope text-orange-400"></i>
+              <a href="mailto:hello@noshahi.dev"
+                class="text-gray-300 hover:text-orange-400 transition-colors text-sm">hello@noshahi.dev</a>
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fas fa-phone text-orange-400"></i>
+              <a href="tel:+1234567890" class="text-gray-300 hover:text-orange-400 transition-colors text-sm">+1 (234)
+                567-890</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Newsletter Section -->
+      <div class="mt-16 pt-8 border-t border-gray-700">
+        <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+          <div>
+            <h4 class="font-bold text-lg mb-2">Stay Updated</h4>
+            <p class="text-gray-400 text-sm">Get the latest insights on AI and digital transformation</p>
+          </div>
+          <div class="flex gap-3 w-full lg:w-auto">
+            <input type="email" placeholder="Enter your email"
+              class="flex-1 lg:w-80 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors">
+            <button
+              class="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300">
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="relative z-10 border-t border-gray-800 bg-black/50">
+      <div class="max-w-7xl mx-auto px-6 lg:px-20 py-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-gray-400 text-sm">
+            © 2025 Noshahi Developers Inc. All rights reserved. Engineering the Intelligent Future.
+          </p>
+          <div class="flex gap-6 text-sm">
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Privacy Policy</a>
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Terms of Service</a>
+            <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ---------- THREE.JS 3D BACKGROUND (ONLY IN HERO, RIGHT SIDE) ----------
+    const canvas = document.getElementById('hero-canvas');
+    if (canvas) {
+      const scene = new THREE.Scene();
+      scene.background = null; // transparent to blend with white bg
+
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+      camera.position.set(0, 1.5, 8);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+
+      function updateCanvasSize() {
+        const container = canvas.parentElement;
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      }
+
+      updateCanvasSize();
+
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+      const mainLight = new THREE.PointLight(0xfaa506, 1.2, 20);
+      mainLight.position.set(3, 4, 5);
+      scene.add(mainLight);
+      const fillLight = new THREE.PointLight(0xfaa506, 0.6);
+      fillLight.position.set(-2, 1, 6);
+      scene.add(fillLight);
+
+      // Central Object: Torus Knot with premium blue/orange gradient feel
+      const knotGeo = new THREE.TorusKnotGeometry(1.1, 0.28, 200, 24, 3, 4);
+      const knotMat = new THREE.MeshStandardMaterial({ color: 0xfa4506, emissive: 0x1E1B3B, roughness: 0.25, metalness: 0.8 });
+      const knot = new THREE.Mesh(knotGeo, knotMat);
+      scene.add(knot);
+
+      // Floating Particles (tech dust)
+      const particleCount = 1800;
+      const particleGeo = new THREE.BufferGeometry();
+      const particlePositions = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount; i++) {
+        particlePositions[i * 3] = (Math.random() - 0.5) * 18;
+        particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+        particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 15 - 5;
+      }
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+      const particleMat = new THREE.PointsMaterial({ color: 0xfa4506, size: 0.05, transparent: true, opacity: 0.4 });
+      const particles = new THREE.Points(particleGeo, particleMat);
+      scene.add(particles);
+
+      // Orbiting small cubes
+      const cubesGroup = [];
+      for (let i = 0; i < 50; i++) {
+        const size = 0.08 + Math.random() * 0.12;
+        const geometry = new THREE.BoxGeometry(size, size, size);
+        const material = new THREE.MeshStandardMaterial({ color: 0xfa4506, emissive: 0xfa2506 });
+        const cube = new THREE.Mesh(geometry, material);
+        const radius = 2.8 + Math.random() * 1.8;
+        const angle = Math.random() * Math.PI * 2;
+        const height = (Math.random() - 0.5) * 4;
+        cube.position.x = Math.cos(angle) * radius;
+        cube.position.z = Math.sin(angle) * radius;
+        cube.position.y = height;
+        cube.userData = { angle: angle, radius: radius, speed: 0.004 + Math.random() * 0.006, ySpeed: 0.002 + Math.random() * 0.004, yPos: height };
+        scene.add(cube);
+        cubesGroup.push(cube);
+      }
+
+      // Rings
+      const ringGeo = new THREE.TorusGeometry(1.9, 0.04, 64, 200);
+      const ringMat = new THREE.MeshStandardMaterial({ color: 0xfa4506, emissive: 0xfa2506 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2;
+      scene.add(ring);
+
+      const ring2Geo = new THREE.TorusGeometry(2.4, 0.03, 64, 200);
+      const ring2Mat = new THREE.MeshStandardMaterial({ color: 0x000, emissive: 0x2E1065 });
+      const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+      ring2.rotation.z = Math.PI / 3;
+      scene.add(ring2);
+
+      let time = 0;
+      function animate3D() {
+        requestAnimationFrame(animate3D);
+        time += 0.01;
+
+        knot.rotation.x += 0.008;
+        knot.rotation.y += 0.012;
+        knot.rotation.z += 0.005;
+
+        ring.rotation.z += 0.003;
+        ring2.rotation.x += 0.002;
+        ring2.rotation.y += 0.003;
+
+        particles.rotation.y += 0.0005;
+        particles.rotation.x = Math.sin(time * 0.1) * 0.1;
+
+        cubesGroup.forEach(cube => {
+          cube.userData.angle += cube.userData.speed;
+          cube.position.x = Math.cos(cube.userData.angle) * cube.userData.radius;
+          cube.position.z = Math.sin(cube.userData.angle) * cube.userData.radius;
+          cube.position.y += cube.userData.ySpeed;
+          if (cube.position.y > 2.5 || cube.position.y < -2.5) cube.userData.ySpeed *= -1;
+          cube.rotation.x += 0.015;
+          cube.rotation.y += 0.02;
+        });
+
+        camera.position.x += (0 - camera.position.x) * 0.05;
+        camera.position.y += (1.2 - camera.position.y) * 0.05;
+        camera.lookAt(0, 0, 0);
+
+        renderer.render(scene, camera);
+      }
+      animate3D();
+
+      window.addEventListener('resize', () => {
+        updateCanvasSize();
+      });
+    }
+
+    // ---------- GSAP SCROLL & INTERACTIONS ----------
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero text reveal
+    gsap.fromTo("h1 span", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "back.out(1)", delay: 0.2 });
+    gsap.fromTo(".text-gray-500.max-w-xl", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.8 });
+    gsap.fromTo(".flex.flex-wrap.gap-5", { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.6, delay: 1 });
+    gsap.fromTo(".flex.gap-8.mt-16", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 1.2 });
+
+    // Scroll-triggered reveal for cards
+    gsap.utils.toArray(".service-card-light, .product-card-light").forEach((card, i) => {
+      gsap.fromTo(card, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" }, delay: i * 0.1 });
+    });
+    gsap.fromTo(".glass-premium-light", { scale: 0.96, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, scrollTrigger: { trigger: ".glass-premium-light", start: "top 80%" } });
+
+    // 3D Tilt effect on cards (light version)
+    document.querySelectorAll('.service-card-light, .product-card-light').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        gsap.to(card, { rotationY: x * 6, rotationX: y * -4, duration: 0.5, ease: "power2.out", transformPerspective: 1000 });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, { rotationY: 0, rotationX: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+      });
+    });
+
+    // Custom Cursor
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+    document.addEventListener('mousemove', (e) => {
+      cursorDot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+      cursorOutline.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursorOutline.style.transform = `scale(1.5)`; cursorOutline.style.borderColor = 'orange'; });
+      el.addEventListener('mouseleave', () => { cursorOutline.style.transform = `scale(1)`; cursorOutline.style.borderColor = 'rgba(79, 70, 229, 0.4)'; });
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('mainNav');
+      if (window.scrollY > 50) nav.classList.add('shadow-md');
+      else nav.classList.remove('shadow-md');
+    });
+
+    // Back to top button
+    const backBtn = document.createElement('div');
+    backBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    backBtn.style.position = 'fixed';
+    backBtn.style.bottom = '30px';
+    backBtn.style.right = '30px';
+    backBtn.style.width = '48px';
+    backBtn.style.height = '48px';
+    backBtn.style.borderRadius = '30px';
+    backBtn.style.backgroundColor = 'orange';
+    backBtn.style.display = 'flex';
+    backBtn.style.alignItems = 'center';
+    backBtn.style.justifyContent = 'center';
+    backBtn.style.cursor = 'pointer';
+    backBtn.style.zIndex = '999';
+    backBtn.style.boxShadow = '0 5px 20px rgba(79,70,229,0.3)';
+    backBtn.style.transition = 'all 0.3s';
+    backBtn.style.color = 'white';
+    document.body.appendChild(backBtn);
+    backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', () => { if (window.scrollY > 500) backBtn.style.opacity = '1'; else backBtn.style.opacity = '0'; });
+    backBtn.style.opacity = '0';
+
+    // Typewriter Effect for Hero Section
+    const typewriterTexts = [
+      "Intelligent Solutions",
+      "AI-Powered Platforms",
+      "Digital Excellence",
+      "Future-Ready Systems"
+    ];
+
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typewriterElement = document.getElementById('dynamic-text');
+    let cursorElement = document.getElementById('typing-cursor');
+
+    function typeWriter() {
+      const currentText = typewriterTexts[textIndex];
+
+      if (isDeleting) {
+        typewriterElement.textContent = currentText.substring(0, charIndex - 1);
+        charIndex--;
+      } else {
+        typewriterElement.textContent = currentText.substring(0, charIndex + 1);
+        charIndex++;
+      }
+
+      let typeSpeed = isDeleting ? 50 : 100;
+
+      if (!isDeleting && charIndex === currentText.length) {
+        typeSpeed = 2000; // Pause at end
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        textIndex = (textIndex + 1) % typewriterTexts.length;
+        typeSpeed = 500; // Pause before typing next
+      }
+
+      setTimeout(typeWriter, typeSpeed);
+    }
+
+    // Start typewriter effect
+    typeWriter();
+
+    // Button interactions
+    document.querySelectorAll('.btn-glow, .btn-outline-premium, .bg-orange-600, .border-2.border-gray-200').forEach(btn => {
+      btn.addEventListener('click', () => { alert('✨ Welcome to Noshahi Developers — schedule your personalized consultation!'); });
+    });
+  </script>
+</body>
+
+</html>
