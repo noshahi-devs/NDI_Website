@@ -1,0 +1,104 @@
+/* Portfolio Premium Light Design System */
+:host {
+    --portfolio-primary: #ea580c;
+    --portfolio-primary-light: #ffedd5;
+    --portfolio-bg: #ffffff;
+    --portfolio-section-alt: #f8fafc;
+    --portfolio-text: #0f172a;
+    --portfolio-text-muted: #64748b;
+    --glass-border: rgba(234, 88, 12, 0.1);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+}
+
+/* Card Styling */
+.portfolio-card, .project-card {
+    background: var(--portfolio-bg);
+    border: 1px solid #f1f5f9;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.portfolio-card:hover, .project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px -12px rgba(234, 88, 12, 0.12), 0 18px 36px -18px rgba(0, 0, 0, 0.1);
+    border-color: var(--portfolio-primary);
+}
+
+/* Filter Buttons */
+.filter-btn {
+    transition: all 0.3s ease;
+    border-color: #f1f5f9;
+    color: var(--portfolio-text-muted);
+}
+
+.filter-btn:hover {
+    background: var(--portfolio-primary-light);
+    color: var(--portfolio-primary);
+    border-color: var(--portfolio-primary);
+}
+
+.filter-btn.active {
+    background: var(--portfolio-primary);
+    color: white;
+    border-color: var(--portfolio-primary);
+    box-shadow: 0 10px 20px -5px rgba(234, 88, 12, 0.4);
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 2rem;
+    overflow: hidden;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Tech Icons */
+.tech-icon-container {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    transition: all 0.4s ease;
+}
+
+.tech-icon-container:hover {
+    background: white;
+    border-color: var(--portfolio-primary);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+}
+
+/* 3D Card Effect */
+.card-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}

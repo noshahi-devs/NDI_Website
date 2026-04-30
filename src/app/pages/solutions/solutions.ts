@@ -72,8 +72,11 @@ export class SolutionsComponent implements AfterViewInit, OnDestroy {
               gsap.fromTo("h1", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "back.out(1)", delay: 0.2 });
               gsap.fromTo("p", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.8 });
               
-              // Scroll-triggered animations
+              // Scroll-triggered animations (Excluding Hero)
               gsap.utils.toArray(".group").forEach((item, i) => {
+                  // Skip the hero section which also uses the 'group' class for hover effects
+                  if (item.closest('section') === item && i === 0) return;
+                  
                   gsap.fromTo(item, { y: 50, opacity: 0 }, { 
                       y: 0, 
                       opacity: 1, 
