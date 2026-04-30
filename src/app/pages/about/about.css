@@ -1,0 +1,227 @@
+/* ── Premium About Page Styles ────────────────────────────────── */
+:host {
+  display: block;
+}
+
+/* ── Premium Background Overlays ─────────────────────────────── */
+.premium-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+      rgba(250, 165, 6, 0.08) 0%,
+      rgba(79, 70, 229, 0.05) 25%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(250, 165, 6, 0.05) 75%,
+      rgba(79, 70, 229, 0.08) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.premium-overlay-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(250, 165, 6, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(250, 165, 6, 0.04) 0%, transparent 50%);
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.premium-overlay-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.015;
+  z-index: 2;
+  pointer-events: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==');
+}
+
+/* ── Premium Glass Card ───────────────────────────────────────── */
+.glass-premium {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.glass-premium:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+  border-color: rgba(250, 165, 6, 0.2);
+}
+
+/* ── Section Title Styles ───────────────────────────────────────── */
+.section-title {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #111827;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* ── Hero Section Premium ─────────────────────────────────────── */
+.hero-section {
+  position: relative;
+  background: radial-gradient(circle at 70% 30%, rgba(234, 88, 12, 0.06), transparent 50%);
+}
+
+/* ── Timeline Styles ─────────────────────────────────────────── */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(251, 146, 60, 0.4) 20%, 
+    rgba(239, 68, 68, 0.4) 50%,
+    rgba(251, 146, 60, 0.4) 80%, 
+    transparent 100%);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+/* ── Value Cards Animation ───────────────────────────────────── */
+.value-card {
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.value-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 40px 80px rgba(250, 165, 6, 0.15);
+}
+
+.value-card .w-20 {
+  transition: all 0.3s ease;
+}
+
+.value-card:hover .w-20 {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* ── Team Cards Premium ───────────────────────────────────────── */
+.team-card {
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.15);
+}
+
+.team-card img {
+  transition: all 0.3s ease;
+}
+
+.team-card:hover img {
+  transform: scale(1.05);
+  border: 4px solid rgba(250, 165, 6, 0.2);
+}
+
+/* ── Premium Button Styles ───────────────────────────────────── */
+.btn-premium {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fb923c 100%);
+  color: white;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-premium:hover::before {
+  left: 100%;
+}
+
+.btn-premium:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(234, 88, 12, 0.3);
+}
+
+/* ── Compact Text Styling ─────────────────────────────────────── */
+.compact-text {
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* ── Floating Animation ───────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ── Responsive Design ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 20px;
+  }
+  
+  .section-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  
+  .glass-premium {
+    margin: 0 1rem;
+  }
+}
+
+/* ── Premium Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fef2e2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ea580c, #dc2626);
+  border-radius: 10px;
+}
+
+/* ── Canvas Container Styling ─────────────────────────────────── */
+#logoCanvas {
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+/* ── Award Badge Animation ───────────────────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(234, 88, 12, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(234, 88, 12, 0.6);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
