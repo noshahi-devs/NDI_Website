@@ -36,9 +36,8 @@ export class PortfolioComponent implements AfterViewInit, OnDestroy {
                 if (typeof gsap !== 'undefined') {
                     gsap.registerPlugin(ScrollTrigger);
 
-                    gsap.fromTo("h1", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "back.out(1)", delay: 0.2 });
-                    
-                    gsap.utils.toArray(".portfolio-card, .project-card, .group").forEach((card, i) => {
+
+                    gsap.utils.toArray(".portfolio-card, .project-card, #web-platforms .group, #client-projects .group").forEach((card, i) => {
                         gsap.fromTo(card, { y: 40, opacity: 0 }, {
                             y: 0,
                             opacity: 1,

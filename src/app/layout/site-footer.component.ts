@@ -1,15 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-site-footer',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   template: `
+    <!-- Scroll to Top Button -->
+    <button
+      (click)="scrollToTop()"
+      [class.opacity-100]="showScrollTop"
+      [class.opacity-0]="!showScrollTop"
+      [class.pointer-events-none]="!showScrollTop"
+      class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gradient-to-br from-orange-600 to-orange-500 text-white rounded-full shadow-[0_8px_30px_rgba(234,88,12,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-[0_8px_40px_rgba(234,88,12,0.6)]"
+      aria-label="Scroll to top">
+      <i class="fas fa-chevron-up text-sm font-bold"></i>
+    </button>
+
     <footer class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
       <!-- Background pattern -->
       <div class="absolute inset-0 opacity-5"
-           style="background-image:url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')">
+           style="background-image:url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=\\'0 0 60 60\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cg fill=\\'none\\' fill-rule=\\'evenodd\\'%3E%3Cg fill=\\'%23ffffff\\' fill-opacity=\\'1\\'%3E%3Cpath d=\\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')">
       </div>
 
       <!-- Orange top accent -->
@@ -19,15 +31,31 @@ import { RouterLink } from '@angular/router';
       <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-20 py-16">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
 
-          <!-- Company info -->
+          <!-- Company info with Logo -->
           <div class="lg:col-span-2">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center font-black text-xl text-white shadow-lg">N</div>
+            <div class="flex items-center gap-5 mb-6">
+              <!-- Hexagon Logo Shape with Spinning Ring -->
+              <div class="relative flex-shrink-0 w-24 h-24 flex items-center justify-center">
+                <!-- Outer spinning gradient ring -->
+                <div class="absolute inset-0 rounded-full border-2 border-orange-500/30 border-t-orange-500 border-r-orange-400"
+                     style="animation: spin 4s linear infinite;"></div>
+                <!-- Hexagon orange shape -->
+                <div class="w-16 h-16 bg-white flex items-center justify-center"
+                     style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                  <img src="assets/img/ndi-logo.png" alt="NDI Logo"
+                       class="w-10 h-10 object-contain"
+                       onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                  <span class="text-white font-black text-xl hidden">N</span>
+                </div>
+                <!-- Small orange dot bottom right -->
+                <div class="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-orange-400 border-2 border-gray-900"></div>
+              </div>
               <div>
-                <h3 class="font-bold text-xl tracking-tight">Noshahi Developers</h3>
+                <h3 class="font-bold text-xl tracking-tight text-white">Noshahi Developers</h3>
                 <p class="text-orange-400 text-sm font-semibold">Inc.,</p>
               </div>
             </div>
+
             <p class="text-gray-300 leading-relaxed mb-6 max-w-sm">
               Engineering the intelligent future with cutting-edge AI solutions, enterprise platforms, and transformative digital experiences.
             </p>
@@ -59,15 +87,15 @@ import { RouterLink } from '@angular/router';
             </ul>
           </div>
 
-          <!-- Products -->
+          <!-- Quick Links -->
           <div>
-            <h4 class="font-bold text-lg mb-6 text-orange-400">Products</h4>
+            <h4 class="font-bold text-lg mb-6 text-orange-400">Quick Links</h4>
             <ul class="space-y-3">
-              <li><a routerLink="/products" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>VirtuLearn</a></li>
-              <li><a routerLink="/products" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>Institute Manager</a></li>
-              <li><a routerLink="/products" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>AI Analytics Suite</a></li>
-              <li><a routerLink="/products" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>Cloud Dashboard</a></li>
+              <li><a routerLink="/" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>Home</a></li>
+              <li><a routerLink="/about" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>About Us</a></li>
               <li><a routerLink="/portfolio" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>Portfolio</a></li>
+              <li><a routerLink="/technologies" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>Technologies</a></li>
+              <li><a routerLink="/contact" class="text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 no-underline text-sm"><i class="fas fa-chevron-right text-xs opacity-60"></i>Contact</a></li>
             </ul>
           </div>
 
@@ -77,15 +105,15 @@ import { RouterLink } from '@angular/router';
             <ul class="space-y-4">
               <li class="flex items-start gap-3">
                 <i class="fas fa-map-marker-alt text-orange-400 mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-300 text-sm">Global Headquarters<br>Silicon Valley, CA</span>
+                <span class="text-gray-300 text-sm">Gulberg, Lahore<br>Pakistan</span>
               </li>
               <li class="flex items-center gap-3">
                 <i class="fas fa-envelope text-orange-400 flex-shrink-0"></i>
-                <a href="mailto:hello@noshahi.dev" class="text-gray-300 hover:text-orange-400 transition-colors text-sm no-underline">hello@noshahi.dev</a>
+                <a href="mailto:noshahidevelopersinc@gmail.com" class="text-gray-300 hover:text-orange-400 transition-colors text-sm no-underline">noshahidevelopersinc@gmail.com</a>
               </li>
               <li class="flex items-center gap-3">
                 <i class="fas fa-phone text-orange-400 flex-shrink-0"></i>
-                <a href="tel:+1234567890" class="text-gray-300 hover:text-orange-400 transition-colors text-sm no-underline">+1 (234) 567-890</a>
+                <a href="tel:+923281642297" class="text-gray-300 hover:text-orange-400 transition-colors text-sm no-underline">+92 328 164 2297</a>
               </li>
             </ul>
           </div>
@@ -127,4 +155,15 @@ import { RouterLink } from '@angular/router';
     </footer>
   `,
 })
-export class SiteFooterComponent {}
+export class SiteFooterComponent {
+  showScrollTop = false;
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.showScrollTop = window.scrollY > 400;
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
